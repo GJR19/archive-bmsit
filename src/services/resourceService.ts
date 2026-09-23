@@ -701,3 +701,83 @@ export async function deleteCourseFolder(
     return { success: false, error: err.message || "Failed to delete course folder" };
   }
 }
+
+// 10. Device-level Persistent Upvoting System
+const DEVICE_UPVOTES_KEY = "archive_device_upvotes";
+
+export function isResourceUpvoted(resourceId: string): boolean {
+  try {
+    if (typeof window === "undefined" || !resourceId) return false;
+    const raw = localStorage.getItem(DEVICE_UPVOTES_KEY);
+    if (!raw) return false;
+    const map = JSON.parse(raw);
+    return !!map[resourceId];
+  } catch {
+    return false;
+  }
+}
+
+export function setDeviceUpvote(resourceId: string, upvoted: boolean): void {
+  try {
+    if (typeof window === "undefined" || !resourceId) return;
+    const raw = localStorage.getItem(DEVICE_UPVOTES_KEY);
+    const map: Record<string, boolean> = raw ? JSON.parse(raw) : {};
+    if (upvoted) {
+      map[resourceId] = true;
+    } else {
+      delete map[resourceId];
+    }
+    localStorage.setItem(DEVICE_UPVOTES_KEY, JSON.stringify(map));
+  } catch (e) {
+    console.error("Error setting device upvote:", e);
+  }
+}
+
+export async function toggleResourceUpvote(
+  resourceId: string,
+  fallbackCurrentCount: number = 0
+): Promise<{ success: boolean; newCount: number; isUpvoted: boolean }> {
+  if (!resourceId) {
+    return { success: false, newCount: fallbackCurrentCount, isUpvoted: false };
+  }
+
+  const currentlyUpvoted = isResourceUpvoted(resourceId);
+  const targetUpvoted = !currentlyUpvoted;
+
+  // Fetch the latest count from Supabase to ensure accurate concurrency
+  let liveCount = fallbackCurrentCount;
+  try {
+    const { data } = await supabase
+      .from("resources")
+      .select("upvotes")
+      .eq("id", resourceId)
+      .maybeSingle();
+
+    if (data && typeof data.upvotes === "number") {
+      liveCount = data.upvotes;
+    }
+  } catch (err) {
+    console.warn("Could not fetch live upvotes from Supabase:", err);
+  }
+
+  const newCount = targetUpvoted ? liveCount + 1 : Math.max(0, liveCount - 1);
+
+  // 1. Immediately store on device (cannot be lost on page reload / refresh)
+  setDeviceUpvote(resourceId, targetUpvoted);
+
+  // 2. Persist to Supabase database so all visitors see the new count
+  try {
+    const { error } = await supabase
+      .from("resources")
+      .update({ upvotes: newCount })
+      .eq("id", resourceId);
+
+    if (error) {
+      console.error("Failed to update upvotes in Supabase:", error);
+    }
+  } catch (err) {
+    console.error("Exception updating upvotes in Supabase:", err);
+  }
+
+  return { success: true, newCount, isUpvoted: targetUpvoted };
+}

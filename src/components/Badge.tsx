@@ -36,10 +36,46 @@ export function Chip({
   );
 }
 
-export function UpvoteBadge({ count }: { count: number }) {
+export function UpvoteBadge({
+  count,
+  active,
+  onClick,
+}: {
+  count: number;
+  active?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
+}) {
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        title={active ? "Click to remove your upvote" : "Click to upvote"}
+        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[12px] font-bold transition-all duration-150 active:scale-95 ${
+          active
+            ? "border border-oxblood bg-oxblood text-white shadow-xs animate-upvote-pop"
+            : "border border-line bg-paper/60 text-ink-soft hover:border-ink hover:text-ink hover:bg-card"
+        }`}
+      >
+        <span className={`text-[10px] ${active ? "text-white" : "text-oxblood"}`}>▲</span>
+        <span>{count}</span>
+      </button>
+    );
+  }
+
   return (
-    <span className="inline-flex items-center gap-1 text-[12.5px] font-medium text-ink-soft">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="text-oxblood">
+    <span
+      className={`inline-flex items-center gap-1 text-[12.5px] font-medium transition-colors ${
+        active ? "font-bold text-oxblood" : "text-ink-soft"
+      }`}
+    >
+      <svg
+        width="13"
+        height="13"
+        viewBox="0 0 24 24"
+        fill={active ? "currentColor" : "none"}
+        className="text-oxblood transition-colors"
+      >
         <path
           d="M7 22H4C3.45 22 3 21.55 3 21V12C3 11.45 3.45 11 4 11H7V22ZM7 22H17.5C18.6 22 19.53 21.24 19.76 20.16L21.6 11.16C21.9 9.73 20.84 8.4 19.38 8.4H14.5L15.24 4.55C15.42 3.58 14.96 2.6 14.09 2.13C13.5 1.81 12.78 1.94 12.34 2.46L7 8.8"
           stroke="currentColor"

@@ -1,20 +1,45 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useArchive } from "../context/ArchiveContext";
 import { getCourse, getResource } from "../data/mockData";
-import { createReferenceBookFromResource } from "../services/resourceService";
+import {
+  createReferenceBookFromResource,
+  isResourceUpvoted,
+  toggleResourceUpvote,
+} from "../services/resourceService";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import type { ResourceType } from "../data/types";
 
 export default function Resource() {
   const { id } = useParams();
-  const { resources, courses } = useArchive();
+  const { resources, courses, updateResourceUpvotes } = useArchive();
   const resource = resources.find((r) => r.id === id) || getResource(id ?? "");
-  const [upvoted, setUpvoted] = useState(false);
+  const [upvoted, setUpvoted] = useState(() => (id ? isResourceUpvoted(id) : false));
+  const [isVoting, setIsVoting] = useState(false);
   const [reported, setReported] = useState(false);
   const viewerContainerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (resource?.id) {
+      setUpvoted(isResourceUpvoted(resource.id));
+    }
+  }, [resource?.id]);
+
+  const handleToggleUpvote = async () => {
+    if (isVoting || !resource) return;
+    setIsVoting(true);
+    try {
+      const res = await toggleResourceUpvote(resource.id, resource.upvotes);
+      setUpvoted(res.isUpvoted);
+      updateResourceUpvotes(resource.id, res.newCount);
+    } catch (err) {
+      console.error("Failed to toggle upvote:", err);
+    } finally {
+      setIsVoting(false);
+    }
+  };
 
   if (!resource) {
     return (
@@ -193,15 +218,18 @@ export default function Resource() {
             <div className="flex flex-wrap items-center gap-3">
               {/* Upvote button */}
               <button
-                onClick={() => setUpvoted(!upvoted)}
+                type="button"
+                onClick={handleToggleUpvote}
+                disabled={isVoting}
+                title={upvoted ? "Click to remove your upvote" : "Click to upvote"}
                 className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
                   upvoted
                     ? "border-oxblood bg-oxblood text-white shadow-sm animate-upvote-pop"
                     : "border-line bg-white text-ink-soft hover:border-ink hover:text-ink hover:shadow-xs"
-                }`}
+                } ${isVoting ? "opacity-75 cursor-wait" : ""}`}
               >
                 <span className={`inline-block transition-transform duration-200 ${upvoted ? "scale-110" : ""}`}>▲</span>
-                <span>{resource.upvotes + (upvoted ? 1 : 0)} Upvotes</span>
+                <span>{upvoted ? "Upvoted" : "Upvote"} · {resource.upvotes}</span>
               </button>
 
               {/* Direct Download Button */}

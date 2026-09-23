@@ -8,6 +8,7 @@ import ContributeForm from "./ContributeForm";
 import { UpvoteBadge } from "./Badge";
 import { categoryThemes } from "../lib/categoryTheme";
 import { useArchive } from "../context/ArchiveContext";
+import { isResourceUpvoted, toggleResourceUpvote } from "../services/resourceService";
 import type { Resource, ResourceType } from "../data/types";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 
@@ -201,6 +202,9 @@ function CourseWindowResourceRow({
 }) {
   const theme = categoryThemes[resource.type];
   const [copied, setCopied] = useState(false);
+  const [isVoting, setIsVoting] = useState(false);
+  const { updateResourceUpvotes } = useArchive();
+  const upvoted = isResourceUpvoted(resource.id);
 
   function handleShare(e: React.MouseEvent) {
     e.preventDefault();
@@ -211,6 +215,21 @@ function CourseWindowResourceRow({
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
+  }
+
+  async function handleToggleUpvote(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isVoting) return;
+    setIsVoting(true);
+    try {
+      const res = await toggleResourceUpvote(resource.id, resource.upvotes);
+      updateResourceUpvotes(resource.id, res.newCount);
+    } catch (err) {
+      console.error("Failed to toggle upvote:", err);
+    } finally {
+      setIsVoting(false);
+    }
   }
 
   return (
@@ -235,7 +254,11 @@ function CourseWindowResourceRow({
         <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] font-medium text-ink-faint">
           <span>by {resource.contributor}</span>
           <span aria-hidden>·</span>
-          <UpvoteBadge count={resource.upvotes} />
+          <UpvoteBadge
+            count={resource.upvotes}
+            active={upvoted}
+            onClick={handleToggleUpvote}
+          />
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">

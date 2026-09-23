@@ -3,9 +3,11 @@ import type { Resource } from "../data/types";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import { TypeBadge, UpvoteBadge } from "./Badge";
 import { categoryThemes } from "../lib/categoryTheme";
+import { isResourceUpvoted } from "../services/resourceService";
 
 export default function ResourceRow({ resource }: { resource: Resource }) {
   const theme = categoryThemes[resource.type];
+  const upvoted = isResourceUpvoted(resource.id);
   return (
     <Link
       to={`/resource/${resource.id}`}
@@ -27,7 +29,7 @@ export default function ResourceRow({ resource }: { resource: Resource }) {
         </div>
       </div>
       <div className="hidden shrink-0 sm:block">
-        <UpvoteBadge count={resource.upvotes} />
+        <UpvoteBadge count={resource.upvotes} active={upvoted} />
       </div>
       <div className="hidden shrink-0 sm:block">
         <TypeBadge type={resource.type} label={RESOURCE_TYPE_LABEL[resource.type]} />

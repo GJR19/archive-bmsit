@@ -7,6 +7,7 @@ interface ArchiveContextType {
   courses: Course[];
   resources: Resource[];
   refreshData: () => Promise<void>;
+  updateResourceUpvotes: (resourceId: string, newCount: number) => void;
   loading: boolean;
 }
 
@@ -14,6 +15,7 @@ const ArchiveContext = createContext<ArchiveContextType>({
   courses: mockCourses,
   resources: mockResources,
   refreshData: async () => {},
+  updateResourceUpvotes: () => {},
   loading: false,
 });
 
@@ -21,6 +23,12 @@ export function ArchiveProvider({ children }: { children: React.ReactNode }) {
   const [courses, setCourses] = useState<Course[]>(mockCourses);
   const [resources, setResources] = useState<Resource[]>(mockResources);
   const [loading, setLoading] = useState(false);
+
+  const updateResourceUpvotes = (resourceId: string, newCount: number) => {
+    setResources((prev) =>
+      prev.map((r) => (r.id === resourceId ? { ...r, upvotes: newCount } : r))
+    );
+  };
 
   async function loadData() {
     try {
@@ -43,7 +51,15 @@ export function ArchiveProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ArchiveContext.Provider value={{ courses, resources, refreshData, loading }}>
+    <ArchiveContext.Provider
+      value={{
+        courses,
+        resources,
+        refreshData,
+        updateResourceUpvotes,
+        loading,
+      }}
+    >
       {children}
     </ArchiveContext.Provider>
   );
