@@ -14,12 +14,12 @@ export default function Tabs({
   onChange: (id: string) => void;
 }) {
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-line">
+    <div className="flex flex-wrap sm:flex-nowrap gap-0.5 sm:gap-1 border-b border-line">
       {items.map((item) => (
         <button
           key={item.id}
           onClick={() => onChange(item.id)}
-          className={`relative shrink-0 whitespace-nowrap px-3.5 py-2.5 text-[14px] transition-colors ${
+          className={`relative shrink-0 whitespace-nowrap px-2.5 py-2 sm:px-3.5 sm:py-2.5 text-[12.5px] sm:text-[14px] transition-colors ${
             active === item.id ? "text-ink font-medium" : "text-ink-faint hover:text-ink-soft"
           }`}
         >

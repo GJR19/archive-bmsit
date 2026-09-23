@@ -102,7 +102,7 @@ export default function CourseWindow({
         </div>
 
         {/* Categories Tabs */}
-        <div className="shrink-0 px-4 sm:px-8 bg-white border-b border-line overflow-x-auto">
+        <div className="shrink-0 px-4 sm:px-8 bg-white border-b border-line">
           <Tabs items={tabs} active={active} onChange={(v) => setActive(v as typeof active)} />
         </div>
 

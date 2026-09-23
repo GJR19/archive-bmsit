@@ -88,7 +88,7 @@ export default function Home() {
           </div>
 
           {/* Category Filter Pills */}
-          <div className="mt-8 w-full overflow-x-auto pb-1">
+          <div className="mt-8 flex w-full justify-center">
             <PillFilter
               size="lg"
               options={pillOptions}

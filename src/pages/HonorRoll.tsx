@@ -195,10 +195,10 @@ export default function HonorRoll() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center gap-2 overflow-x-auto pb-1">
+            <div className="mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 pb-1">
               <button
                 onClick={() => setBranch("all")}
-                className={`rounded-full px-4 py-1.5 text-[13.5px] font-semibold transition-all duration-200 active:scale-95 ${
+                className={`rounded-full px-3 py-1 sm:px-4 sm:py-1.5 text-[12px] sm:text-[13.5px] font-semibold transition-all duration-200 active:scale-95 ${
                   branch === "all"
                     ? "bg-[#7A2E2A] text-white shadow-xs"
                     : "border border-line bg-transparent text-ink-soft hover:border-ink-soft hover:text-ink"
@@ -210,7 +210,7 @@ export default function HonorRoll() {
                 <button
                   key={b}
                   onClick={() => setBranch(b)}
-                  className={`rounded-full px-4 py-1.5 text-[13.5px] font-semibold transition-all duration-200 active:scale-95 ${
+                  className={`rounded-full px-3 py-1 sm:px-4 sm:py-1.5 text-[12px] sm:text-[13.5px] font-semibold transition-all duration-200 active:scale-95 ${
                     branch === b
                       ? "bg-[#7A2E2A] text-white shadow-xs"
                       : "border border-line bg-transparent text-ink-soft hover:border-ink-soft hover:text-ink"

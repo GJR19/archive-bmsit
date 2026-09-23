@@ -15,13 +15,13 @@ export default function PillFilter({
   onChange: (id: string) => void;
   size?: "md" | "lg";
 }) {
-  const padding = size === "lg" ? "px-3.5 py-1.5 sm:px-5 sm:py-2.5" : "px-3 py-1 sm:px-3.5 sm:py-1.5";
-  const fontSize = size === "lg" ? "text-[13px] sm:text-[15px]" : "text-[12px] sm:text-[13.5px]";
+  const padding = size === "lg" ? "px-3 py-1.5 sm:px-5 sm:py-2.5" : "px-2.5 py-1 sm:px-3.5 sm:py-1.5";
+  const fontSize = size === "lg" ? "text-[12.5px] sm:text-[15px]" : "text-[12px] sm:text-[13.5px]";
   const dotSize = size === "lg" ? "h-2 w-2" : "h-1.5 w-1.5";
-  const containerPad = size === "lg" ? "p-1 sm:p-1.5" : "p-1";
+  const containerPad = size === "lg" ? "p-1.5" : "p-1";
 
   return (
-    <div className={`inline-flex max-w-full flex-nowrap sm:flex-wrap items-center justify-start sm:justify-center gap-1 rounded-full border border-line bg-line/25 overflow-x-auto ${containerPad}`}>
+    <div className={`inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-[20px] sm:rounded-full border border-line bg-line/25 ${containerPad}`}>
       {options.map((o) => {
         const isActive = active === o.id;
         return (
