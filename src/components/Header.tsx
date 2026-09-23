@@ -12,6 +12,12 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+
   const nav = [
     { to: "/", label: "Archive" },
     { to: "/bookshelf", label: "Bookshelf" },
@@ -22,7 +28,11 @@ export default function Header() {
     <header className="sticky top-3 z-40 px-3 sm:px-8 animate-header-enter">
       <div className="mx-auto flex h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-3.5 sm:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
         {/* Left: Logo */}
-        <Link to="/" className="flex items-center gap-2 sm:gap-2.5 transition-opacity hover:opacity-85 shrink-0">
+        <Link
+          to="/"
+          onClick={scrollToTop}
+          className="flex items-center gap-2 sm:gap-2.5 transition-opacity hover:opacity-85 shrink-0"
+        >
           <Logo size={20} />
           <span className="font-serif text-[16px] sm:text-[17px] font-bold tracking-tight text-ink">
             ARCHIVE
@@ -37,6 +47,7 @@ export default function Header() {
               <Link
                 key={item.to}
                 to={item.to}
+                onClick={scrollToTop}
                 className={`rounded-full px-5 py-1.5 text-[13.5px] font-bold transition-all duration-200 ${
                   active
                     ? "bg-white text-ink shadow-sm scale-100"
@@ -105,7 +116,10 @@ export default function Header() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    scrollToTop();
+                  }}
                   className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-[14px] font-bold transition-colors ${
                     active
                       ? "bg-[#7A2E2A] text-white shadow-xs"
