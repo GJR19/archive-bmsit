@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import { ArchiveProvider } from "./context/ArchiveContext";
 import Home from "./pages/Home";
 import Course from "./pages/Course";
@@ -43,6 +44,7 @@ export default function App() {
           <Route path={ADMIN_PATH} element={<Admin />} />
           <Route path="/admin" element={<Navigate to="/" replace />} />
         </Routes>
+        <Analytics />
       </BrowserRouter>
     </ArchiveProvider>
   );
