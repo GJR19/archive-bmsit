@@ -3,18 +3,23 @@ import type { Resource } from "../data/types";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import { TypeBadge, UpvoteBadge } from "./Badge";
 import { categoryThemes } from "../lib/categoryTheme";
-import { isResourceUpvoted } from "../services/resourceService";
+import { isResourceUpvoted, normalizeFileType } from "../services/resourceService";
 
 export default function ResourceRow({ resource }: { resource: Resource }) {
   const theme = categoryThemes[resource.type];
   const upvoted = isResourceUpvoted(resource.id);
+  const fileBadge = normalizeFileType(resource.fileType);
   return (
     <Link
       to={`/resource/${resource.id}`}
       className="group flex items-center gap-4 rounded-[8px] border border-transparent px-3 py-3.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-line hover:bg-card hover:shadow-card active:scale-[0.99] will-change-transform sm:px-4"
     >
-      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[6px] text-[10px] font-semibold transition-transform duration-200 group-hover:scale-105 ${theme.iconBg}`}>
-        {resource.fileType}
+      <div
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] font-black uppercase transition-transform duration-200 group-hover:scale-105 overflow-hidden select-none ${theme.iconBg} ${
+          fileBadge.length >= 4 ? "text-[9.5px] tracking-tight" : "text-[11.5px] tracking-wider"
+        }`}
+      >
+        <span className="truncate px-0.5 leading-none">{fileBadge}</span>
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[14.5px] text-ink transition-colors duration-200 group-hover:text-oxblood">

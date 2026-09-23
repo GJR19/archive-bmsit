@@ -16,6 +16,7 @@ import {
   deleteCourseFolder,
   createNewCourseFolder,
   getLiveCourses,
+  normalizeFileType,
   type PendingResource,
 } from "../services/resourceService";
 
@@ -529,7 +530,7 @@ export default function Admin() {
                             {RESOURCE_TYPE_LABEL[item.type] || item.type}
                           </span>
                           <span className="rounded-full bg-paper px-2 py-0.5 text-[11.5px] font-semibold text-ink-faint border border-line">
-                            {item.file_size_mb > 0 ? `${item.file_type} · ${item.file_size_mb} MB` : item.file_type || "LINK"}
+                            {item.file_size_mb > 0 ? `${normalizeFileType(item.file_type)} · ${item.file_size_mb} MB` : normalizeFileType(item.file_type) || "LINK"}
                           </span>
                           <span className="text-[12px] text-ink-faint">Uploaded {item.upload_date}</span>
                         </div>

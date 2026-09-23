@@ -22,6 +22,25 @@ export interface PendingResource {
   created_at?: string;
 }
 
+export function normalizeFileType(type?: string): string {
+  if (!type) return "PDF";
+  const upper = type.trim().toUpperCase();
+  if (upper.includes("PDF")) return "PDF";
+  if (upper.includes("PPTX")) return "PPTX";
+  if (upper.includes("PPT")) return "PPT";
+  if (upper.includes("DOCX")) return "DOCX";
+  if (upper.includes("DOC")) return "DOC";
+  if (upper.includes("XLSX") || upper.includes("XLS") || upper.includes("SHEET")) return "XLSX";
+  if (upper.includes("TXT")) return "TXT";
+  if (upper.includes("ZIP") || upper.includes("RAR") || upper.includes("7Z") || upper.includes("TAR")) return "ZIP";
+  if (upper.includes("PNG") || upper.includes("JPG") || upper.includes("JPEG") || upper.includes("HEIC") || upper.includes("IMAGE")) return "IMG";
+  if (upper.includes("DRIVE")) return "DRIVE";
+  if (upper.includes("BOOK")) return "BOOK";
+  if (upper.includes("LINK") || upper.includes("URL")) return "LINK";
+  const first = upper.split(/[\s_.-]+/)[0];
+  return first.slice(0, 4) || "DOC";
+}
+
 const DELETED_COURSES_KEY = "archive_deleted_courses";
 const DELETED_RESOURCES_KEY = "archive_deleted_resources";
 
@@ -255,7 +274,7 @@ export async function getLiveResources(): Promise<Resource[]> {
           type: r.type as ResourceType,
           academicYear: r.academic_year,
           semester: r.semester,
-          fileType: r.file_type as any,
+          fileType: normalizeFileType(r.file_type) as any,
           fileSizeMb: Number(r.file_size_mb),
           contributor: r.contributor,
           usn: r.usn,
@@ -390,7 +409,7 @@ export async function submitContributorResource({
     let fileSizeMb = 0;
 
     if (file) {
-      ext = file.name.split(".").pop()?.toUpperCase() || "PDF";
+      ext = normalizeFileType(file.name.split(".").pop()?.toUpperCase() || "PDF");
       const cleanFileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
       const storagePath = `uploads/${cleanFileName}`;
 

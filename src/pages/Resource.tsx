@@ -7,6 +7,7 @@ import {
   createReferenceBookFromResource,
   isResourceUpvoted,
   toggleResourceUpvote,
+  normalizeFileType,
 } from "../services/resourceService";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import type { ResourceType } from "../data/types";
@@ -246,7 +247,7 @@ export default function Resource() {
                     <polyline points="7 10 12 15 17 10" />
                     <line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
-                  <span>Download {resource.fileType || "Document"}</span>
+                  <span>Download {normalizeFileType(resource.fileType) || "Document"}</span>
                 </a>
               )}
             </div>
@@ -278,7 +279,7 @@ export default function Resource() {
               </div>
               <div className="rounded-lg bg-paper/60 p-3 border border-line/60">
                 <span className="block text-xs font-medium text-ink-faint uppercase tracking-wider">File Details</span>
-                <span className="mt-1 block font-bold text-ink">{resource.fileType || "PDF"} · {resource.fileSizeMb || 0} MB</span>
+                <span className="mt-1 block font-bold text-ink">{normalizeFileType(resource.fileType) || "PDF"} · {resource.fileSizeMb || 0} MB</span>
               </div>
             </div>
           </div>
