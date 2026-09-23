@@ -64,17 +64,17 @@ export default function Home() {
           <div className="mt-9 w-full max-w-2xl">
             <div
               title="Search is limited to course names"
-              className="group flex items-center gap-3 rounded-[12px] border border-line-strong bg-white px-5 py-4 shadow-card sm:px-6 sm:py-4.5 transition-all duration-200 focus-within:border-oxblood/60 focus-within:shadow-lift focus-within:ring-2 focus-within:ring-oxblood/10"
+              className="group flex items-center gap-2.5 sm:gap-3 rounded-[12px] border border-line-strong bg-white px-4 py-3 sm:px-6 sm:py-4.5 shadow-card transition-all duration-200 focus-within:border-oxblood/60 focus-within:shadow-lift focus-within:ring-2 focus-within:ring-oxblood/10"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="shrink-0 text-ink-soft transition-colors duration-200 group-focus-within:text-oxblood">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="shrink-0 text-ink-soft transition-colors duration-200 group-focus-within:text-oxblood sm:w-[22px] sm:h-[22px]">
                 <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.5" />
                 <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search course name (e.g. Operating Systems, Mathematics)"
-                className="flex-1 cursor-text bg-transparent text-[16px] font-semibold text-ink placeholder:text-ink-faint focus:outline-none sm:text-[17px]"
+                placeholder="Search courses (e.g. Operating Systems...)"
+                className="flex-1 cursor-text bg-transparent text-[15px] font-semibold text-ink placeholder:text-ink-faint focus:outline-none sm:text-[17px]"
               />
               {query && (
                 <button

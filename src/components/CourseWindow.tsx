@@ -81,20 +81,20 @@ export default function CourseWindow({
       <div className="absolute inset-0" onClick={onClose} aria-hidden />
       <div className="relative flex max-h-[92vh] w-full max-w-[760px] flex-col overflow-hidden rounded-t-[20px] border border-line-strong bg-white shadow-lift sm:rounded-[20px] animate-modal-in">
         {/* Header - BMSIT COURSE HUB removed, no department/semester */}
-        <div className="shrink-0 border-b border-line bg-paper/60 px-6 pb-5 pt-6 sm:px-8">
-          <div className="flex items-start justify-between gap-4">
+        <div className="shrink-0 border-b border-line bg-paper/60 px-4 pb-4 pt-5 sm:px-8 sm:pb-5 sm:pt-6">
+          <div className="flex items-start justify-between gap-3 sm:gap-4">
             <div className="min-w-0">
-              <h2 className="truncate font-serif text-[24px] font-bold leading-tight text-ink sm:text-[28px]">
+              <h2 className="truncate font-serif text-[20px] sm:text-[28px] font-bold leading-tight text-ink">
                 {course.title}
               </h2>
-              <p className="mt-1 text-[13.5px] font-medium text-ink-soft">
+              <p className="mt-1 text-[12.5px] sm:text-[13.5px] font-medium text-ink-soft">
                 {courseResources.length + (course.referenceBook ? 1 : 0)} {(courseResources.length + (course.referenceBook ? 1 : 0)) === 1 ? "resource" : "resources"} available
               </p>
             </div>
             <button
               onClick={onClose}
               aria-label="Close"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink-soft font-bold transition-all duration-150 hover:bg-ink hover:text-white hover:scale-105 active:scale-95"
+              className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink-soft font-bold transition-all duration-150 hover:bg-ink hover:text-white hover:scale-105 active:scale-95"
             >
               ✕
             </button>
@@ -102,12 +102,12 @@ export default function CourseWindow({
         </div>
 
         {/* Categories Tabs */}
-        <div className="shrink-0 px-6 sm:px-8 bg-white border-b border-line">
+        <div className="shrink-0 px-4 sm:px-8 bg-white border-b border-line overflow-x-auto">
           <Tabs items={tabs} active={active} onChange={(v) => setActive(v as typeof active)} />
         </div>
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 sm:px-8 space-y-4">
+        <div className="flex-1 overflow-y-auto px-3.5 py-4 sm:px-8 space-y-4">
           {/* Reference Book Card Preview */}
           {course.referenceBook && (active === "all" || active === "reference") && (
             <div className="overflow-hidden rounded-[16px] border border-[#48334d]/25 bg-[#f3edf5] p-5 shadow-sm transition-all hover:border-[#48334d]/40">
@@ -261,16 +261,17 @@ function CourseWindowResourceRow({
           />
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-2">
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
         <button
           onClick={handleShare}
-          className="rounded-full border border-line bg-white px-3 py-1.5 text-[12.5px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink active:scale-95"
+          title="Share resource link"
+          className="rounded-full border border-line bg-white px-2.5 py-1 text-[11.5px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12.5px]"
         >
           {copied ? "Copied" : "Share"}
         </button>
         <Link
           to={`/resource/${resource.id}`}
-          className="rounded-full bg-ink px-3.5 py-1.5 text-[12.5px] font-bold text-white transition-all duration-150 hover:bg-oxblood hover:-translate-y-0.5 active:scale-95"
+          className="rounded-full bg-ink px-3 py-1 text-[11.5px] font-bold text-white transition-all duration-150 hover:bg-oxblood hover:-translate-y-0.5 active:scale-95 sm:px-3.5 sm:py-1.5 sm:text-[12.5px]"
         >
           Open
         </Link>

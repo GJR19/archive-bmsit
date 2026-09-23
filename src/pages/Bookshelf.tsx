@@ -118,7 +118,7 @@ export default function Bookshelf() {
         <div className="mx-auto max-w-content space-y-12">
           {shelves.map((shelf, sIdx) => (
             <div key={sIdx} className="relative">
-              <div className="flex items-end justify-center gap-3 sm:gap-6 overflow-x-auto pb-1 px-4 min-h-[280px]">
+              <div className="flex items-end justify-start sm:justify-center gap-3 sm:gap-6 overflow-x-auto pb-1 px-4 min-h-[280px]">
                 {shelf.map((book, bIdx) => (
                   <div
                     key={book.id}

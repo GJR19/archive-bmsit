@@ -168,11 +168,11 @@ export default function Resource() {
                   ref={iframeRef}
                   src={viewerUrl}
                   title={resource.title}
-                  className="w-full h-[650px] sm:h-[820px] border-none bg-[#2e2e2e]"
+                  className="w-full h-[460px] sm:h-[680px] md:h-[820px] border-none bg-[#2e2e2e]"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                 />
               ) : (
-                <div className="flex h-[450px] flex-col items-center justify-center gap-4 bg-[#242424] px-6 text-center text-white">
+                <div className="flex h-[360px] sm:h-[450px] flex-col items-center justify-center gap-4 bg-[#242424] px-6 text-center text-white">
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                       <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -180,8 +180,8 @@ export default function Resource() {
                     </svg>
                   </div>
                   <div>
-                    <p className="font-serif text-[20px] font-bold text-white">Document Preview</p>
-                    <p className="mt-1 max-w-md text-[14px] text-white/70">
+                    <p className="font-serif text-[18px] sm:text-[20px] font-bold text-white">Document Preview</p>
+                    <p className="mt-1 max-w-md text-[13px] sm:text-[14px] text-white/70">
                       No live file URL attached to this item. Contributed notes uploaded through Contribute or Admin display here automatically.
                     </p>
                   </div>
@@ -199,10 +199,10 @@ export default function Resource() {
                 <button
                   type="button"
                   onClick={handleFullScreen}
-                  className="absolute bottom-5 right-5 z-20 flex items-center gap-2 rounded-full bg-[#1e1e1e]/90 px-4 py-2 text-[12.5px] font-bold text-white shadow-xl backdrop-blur-md hover:bg-black transition-all hover:scale-105 active:scale-95 border border-white/10"
+                  className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 z-20 flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#1e1e1e]/90 px-3 py-1.5 sm:px-4 sm:py-2 text-[11.5px] sm:text-[12.5px] font-bold text-white shadow-xl backdrop-blur-md hover:bg-black transition-all hover:scale-105 active:scale-95 border border-white/10"
                   title="Open full screen"
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[15px] sm:h-[15px]">
                     <polyline points="15 3 21 3 21 9" />
                     <polyline points="9 21 3 21 3 15" />
                     <line x1="21" y1="3" x2="14" y2="10" />
@@ -215,15 +215,15 @@ export default function Resource() {
           )}
 
           {/* Actions & File Details Bar */}
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-t border-line pt-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Upvote button */}
               <button
                 type="button"
                 onClick={handleToggleUpvote}
                 disabled={isVoting}
                 title={upvoted ? "Click to remove your upvote" : "Click to upvote"}
-                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
+                className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full border px-3.5 py-1.5 sm:px-4 sm:py-2 text-[12.5px] sm:text-[13px] font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
                   upvoted
                     ? "border-oxblood bg-oxblood text-white shadow-sm animate-upvote-pop"
                     : "border-line bg-white text-ink-soft hover:border-ink hover:text-ink hover:shadow-xs"
@@ -240,7 +240,7 @@ export default function Resource() {
                   target="_blank"
                   rel="noopener noreferrer"
                   download
-                  className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-[13px] font-bold text-ink-soft hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-150"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-line bg-white px-3.5 py-1.5 sm:px-4 sm:py-2 text-[12.5px] sm:text-[13px] font-bold text-ink-soft hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-150"
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

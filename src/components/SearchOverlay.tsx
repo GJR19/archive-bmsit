@@ -44,7 +44,7 @@ export default function SearchOverlay({
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-ink/40 px-4 pt-[12vh] backdrop-blur-sm animate-backdrop-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-ink/40 px-3 pt-4 sm:px-4 sm:pt-[12vh] backdrop-blur-sm animate-backdrop-in">
       <div
         className="absolute inset-0"
         onClick={onClose}
