@@ -42,11 +42,11 @@ export default function Course() {
     notes: courseResources.filter((r) => r.type === "notes").length,
     "past-paper": courseResources.filter((r) => r.type === "past-paper").length,
     extras: courseResources.filter((r) => r.type === "extras").length,
-    reference: courseResources.filter((r) => r.type === "reference").length,
+    reference: courseResources.filter((r) => r.type === "reference").length + (course.referenceBook ? 1 : 0),
   };
 
   const tabs = [
-    { id: "all", label: "Everything", count: courseResources.length },
+    { id: "all", label: "Everything", count: courseResources.length + (course.referenceBook ? 1 : 0) },
     ...course.allowedCategories.map((cat) => ({
       id: cat,
       label: RESOURCE_TYPE_LABEL[cat],
@@ -68,7 +68,7 @@ export default function Course() {
                 {course.title}
               </h1>
               <p className="mt-2 text-[15px] font-medium text-ink-soft">
-                {courseResources.length} resources available across configured categories
+                {courseResources.length + (course.referenceBook ? 1 : 0)} resources available across configured categories
               </p>
             </div>
             <Button onClick={() => setUploadOpen(true)}>Contribute Resource</Button>
@@ -133,7 +133,7 @@ export default function Course() {
             ))}
         </div>
 
-        {filtered.length === 0 && (
+        {filtered.length === 0 && (!course.referenceBook || active !== "reference") && (
           <p className="py-20 text-center font-medium text-ink-faint">
             No resources available for this category yet.
           </p>

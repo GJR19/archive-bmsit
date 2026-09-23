@@ -38,6 +38,9 @@ export default function CourseCard({
   // File count: active category or total live files in this folder
   const count = useMemo(() => {
     if (isFiltered) {
+      if (activeCategory === "reference") {
+        return (course.referenceBook ? 1 : 0) + courseResources.filter((r) => r.type === "reference").length;
+      }
       return courseResources.filter((r) => r.type === activeCategory).length;
     }
     return courseResources.length + (course.referenceBook ? 1 : 0);
@@ -158,7 +161,7 @@ export default function CourseCard({
               {count}
             </span>
             <span className="block text-[10px] font-extrabold uppercase tracking-widest text-white/90">
-              FILES
+              {activeCategory === "reference" ? (count === 1 ? "BOOK" : "BOOKS") : (count === 1 ? "FILE" : "FILES")}
             </span>
           </div>
         </div>

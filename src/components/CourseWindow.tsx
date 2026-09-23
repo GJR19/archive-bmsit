@@ -63,11 +63,11 @@ export default function CourseWindow({
     notes: courseResources.filter((r) => r.type === "notes").length,
     "past-paper": courseResources.filter((r) => r.type === "past-paper").length,
     extras: courseResources.filter((r) => r.type === "extras").length,
-    reference: courseResources.filter((r) => r.type === "reference").length,
+    reference: courseResources.filter((r) => r.type === "reference").length + (course.referenceBook ? 1 : 0),
   };
 
   const tabs = [
-    { id: "all", label: "Everything", count: courseResources.length },
+    { id: "all", label: "Everything", count: courseResources.length + (course.referenceBook ? 1 : 0) },
     ...course.allowedCategories.map((cat) => ({
       id: cat,
       label: RESOURCE_TYPE_LABEL[cat],
@@ -87,7 +87,7 @@ export default function CourseWindow({
                 {course.title}
               </h2>
               <p className="mt-1 text-[13.5px] font-medium text-ink-soft">
-                {courseResources.length} {courseResources.length === 1 ? "resource" : "resources"} available
+                {courseResources.length + (course.referenceBook ? 1 : 0)} {(courseResources.length + (course.referenceBook ? 1 : 0)) === 1 ? "resource" : "resources"} available
               </p>
             </div>
             <button
@@ -160,7 +160,7 @@ export default function CourseWindow({
               ))}
           </div>
 
-          {filtered.length === 0 && (
+          {filtered.length === 0 && (!course.referenceBook || active !== "reference") && (
             <p className="py-16 text-center font-medium text-ink-faint">
               No {active !== "all" ? RESOURCE_TYPE_LABEL[active] : "resources"} found for this course.
             </p>
