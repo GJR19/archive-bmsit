@@ -11,7 +11,7 @@
 ---
 
 ### Live Application
-**[archive.bmsit.co.in](https://archive.bmsit.co.in/)** *(also accessible via [archive-bmsit.vercel.app](https://archive-bmsit.vercel.app/))*
+**[archive.bmsit.co.in](https://archive.bmsit.co.in/)**
 
 ### Repository
 [github.com/GJR19/archive-bmsit](https://github.com/GJR19/archive-bmsit)
