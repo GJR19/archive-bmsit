@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import { Field, TextInput } from "../components/FormField";
 import { useArchive } from "../context/ArchiveContext";
 import { courses as fallbackCourses } from "../data/mockData";
+import { filterAndRankCourses } from "../lib/courseSearch";
 import type { Course } from "../data/types";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import {
@@ -313,8 +314,7 @@ export default function Admin() {
   // Filtered courses for the Course Folders tab
   const filteredCourses = useMemo(() => {
     if (!courseSearchQuery.trim()) return courses;
-    const q = courseSearchQuery.toLowerCase();
-    return courses.filter((c) => c.title.toLowerCase().includes(q));
+    return filterAndRankCourses(courses, courseSearchQuery);
   }, [courses, courseSearchQuery]);
 
   if (!authed) {

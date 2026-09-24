@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { departments } from "../data/mockData";
 import { useArchive } from "../context/ArchiveContext";
+import { filterAndRankCourses } from "../lib/courseSearch";
 
 export default function SearchOverlay({
   open,
@@ -35,10 +36,7 @@ export default function SearchOverlay({
 
   const results = useMemo(() => {
     if (!q.trim()) return [];
-    const needle = q.toLowerCase();
-    return courses
-      .filter((c) => c.title.toLowerCase().includes(needle))
-      .slice(0, 8);
+    return filterAndRankCourses(courses, q).slice(0, 10);
   }, [q, courses]);
 
   if (!open) return null;
@@ -60,7 +58,7 @@ export default function SearchOverlay({
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search course name"
+            placeholder="Search course name or abbreviation (e.g. OS, DBMS, ADA...)"
             className="flex-1 bg-transparent text-[15px] text-ink placeholder:text-ink-faint focus:outline-none"
           />
           <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-[10.5px] text-ink-faint">

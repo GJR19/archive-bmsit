@@ -8,6 +8,7 @@ import PillFilter from "../components/PillFilter";
 import ContributeCTA from "../components/ContributeCTA";
 import { useArchive } from "../context/ArchiveContext";
 import { categoryOrder, categoryThemes } from "../lib/categoryTheme";
+import { filterAndRankCourses } from "../lib/courseSearch";
 import type { ResourceType } from "../data/types";
 
 export default function Home() {
@@ -28,8 +29,7 @@ export default function Home() {
       });
     }
     if (query.trim()) {
-      const needle = query.toLowerCase();
-      list = list.filter((c) => c.title.toLowerCase().includes(needle));
+      list = filterAndRankCourses(list, query);
     }
     return list;
   }, [courses, resources, query, activeCategory]);
@@ -73,7 +73,7 @@ export default function Home() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search courses (e.g. Operating Systems...)"
+                placeholder="Search courses (e.g. OS, DBMS, ADA, Data Structures...)"
                 className="flex-1 cursor-text bg-transparent text-[15px] font-semibold text-ink placeholder:text-ink-faint focus:outline-none sm:text-[17px]"
               />
               {query && (
