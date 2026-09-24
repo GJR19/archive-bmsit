@@ -2,7 +2,7 @@
 
 > The institutional memory of BMSIT — BMS Institute of Technology and Management's searchable archive of past papers, lecture notes, reference textbooks, and academic resources.
 
-[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live-success?style=flat-square&logo=vercel)](https://archive-bmsit.vercel.app/)
+[![Domain](https://img.shields.io/badge/Domain-archive.bmsit.co.in-success?style=flat-square&logo=vercel)](https://archive.bmsit.co.in/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
@@ -11,7 +11,7 @@
 ---
 
 ### Live Application
-**[archive-bmsit.vercel.app](https://archive-bmsit.vercel.app/)**
+**[archive.bmsit.co.in](https://archive.bmsit.co.in/)** *(also accessible via [archive-bmsit.vercel.app](https://archive-bmsit.vercel.app/))*
 
 ### Repository
 [github.com/GJR19/archive-bmsit](https://github.com/GJR19/archive-bmsit)
