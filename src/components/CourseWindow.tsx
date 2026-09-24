@@ -8,7 +8,7 @@ import ContributeForm from "./ContributeForm";
 import { UpvoteBadge } from "./Badge";
 import { categoryThemes } from "../lib/categoryTheme";
 import { useArchive } from "../context/ArchiveContext";
-import { isResourceUpvoted, toggleResourceUpvote } from "../services/resourceService";
+import { isResourceUpvoted, toggleResourceUpvote, getDownloadUrl } from "../services/resourceService";
 import type { Resource, ResourceType } from "../data/types";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 
@@ -261,20 +261,50 @@ function CourseWindowResourceRow({
           />
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
         <button
           onClick={handleShare}
           title="Share resource link"
-          className="rounded-full border border-line bg-white px-2.5 py-1 text-[11.5px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12.5px]"
+          className="rounded-full border border-line bg-white px-2.5 py-1 text-[11px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12px]"
         >
           {copied ? "Copied" : "Share"}
         </button>
         <Link
           to={`/resource/${resource.id}`}
-          className="rounded-full bg-ink px-3 py-1 text-[11.5px] font-bold text-white transition-all duration-150 hover:bg-oxblood hover:-translate-y-0.5 active:scale-95 sm:px-3.5 sm:py-1.5 sm:text-[12.5px]"
+          className="rounded-full bg-ink px-3 py-1 text-[11px] font-bold text-white transition-all duration-150 hover:bg-oxblood hover:-translate-y-0.5 active:scale-95 sm:px-3.5 sm:py-1.5 sm:text-[12px]"
         >
           Open
         </Link>
+        {resource.link ? (
+          <a
+            href={getDownloadUrl(resource.link)}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            title="Download file"
+            className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2.5 py-1 text-[11px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink hover:bg-paper active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12px]"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink-soft">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Download</span>
+          </a>
+        ) : (
+          <Link
+            to={`/resource/${resource.id}`}
+            title="View and download file"
+            className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2.5 py-1 text-[11px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink hover:bg-paper active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12px]"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink-soft">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Download</span>
+          </Link>
+        )}
       </div>
     </div>
   );

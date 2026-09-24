@@ -8,6 +8,9 @@ import {
   isResourceUpvoted,
   toggleResourceUpvote,
   normalizeFileType,
+  getDownloadUrl,
+  getResourceViews,
+  incrementResourceView,
 } from "../services/resourceService";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import type { ResourceType } from "../data/types";
@@ -22,11 +25,46 @@ export default function Resource() {
   const viewerContainerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [viewsCount, setViewsCount] = useState<number>(() => {
+    return getResourceViews(resource?.id || "", (resource?.upvotes || 0) * 3 + 14);
+  });
+
   useEffect(() => {
     if (resource?.id) {
       setUpvoted(isResourceUpvoted(resource.id));
+      const updatedViews = incrementResourceView(resource.id, (resource.upvotes || 0) * 3 + 14);
+      setViewsCount(updatedViews);
     }
   }, [resource?.id]);
+
+  useEffect(() => {
+    if (isFullScreen) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsFullScreen(false);
+        }
+      };
+      const handleFsChange = () => {
+        const isNativeFs = !!(document.fullscreenElement || (document as any).webkitFullscreenElement);
+        if (!isNativeFs && isFullScreen) {
+          setIsFullScreen(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("fullscreenchange", handleFsChange);
+      document.addEventListener("webkitfullscreenchange", handleFsChange);
+      return () => {
+        document.body.style.overflow = "";
+        window.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("fullscreenchange", handleFsChange);
+        document.removeEventListener("webkitfullscreenchange", handleFsChange);
+      };
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isFullScreen]);
 
   const handleToggleUpvote = async () => {
     if (isVoting || !resource) return;
@@ -63,20 +101,33 @@ export default function Resource() {
 
   const viewerUrl = getViewerUrl(resource.link, resource.fileType);
 
-  const handleFullScreen = () => {
-    if (viewerContainerRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      } else {
-        viewerContainerRef.current.requestFullscreen().catch(() => {
-          // If browser restricts element fullscreen on cross-origin iframe, open in new tab
-          if (resource.link) {
-            window.open(resource.link, "_blank");
-          }
-        });
+  const handleToggleFullScreen = () => {
+    if (!isFullScreen) {
+      setIsFullScreen(true);
+      // Try native element fullscreen if supported (desktop/Chrome/Android)
+      try {
+        const el = viewerContainerRef.current as any;
+        if (el?.requestFullscreen) {
+          el.requestFullscreen().catch(() => {});
+        } else if (el?.webkitRequestFullscreen) {
+          el.webkitRequestFullscreen();
+        }
+      } catch {
+        // Fallback safely handled by isFullScreen CSS overlay
       }
-    } else if (resource.link) {
-      window.open(resource.link, "_blank");
+    } else {
+      setIsFullScreen(false);
+      try {
+        if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          } else if ((document as any).webkitExitFullscreen) {
+            (document as any).webkitExitFullscreen();
+          }
+        }
+      } catch {
+        // Fallback safely handled by isFullScreen CSS overlay
+      }
     }
   };
 
@@ -115,7 +166,7 @@ export default function Resource() {
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                 <circle cx="12" cy="12" r="3" />
               </svg>
-              <span>{((resource.upvotes || 0) * 3 + 8)} views</span>
+              <span>{viewsCount} views</span>
             </span>
           </div>
 
@@ -161,14 +212,61 @@ export default function Resource() {
             /* In-Site Document Reader / PDF Viewer (matches reference screenshot) */
             <div
               ref={viewerContainerRef}
-              className="relative mt-7 w-full overflow-hidden rounded-[16px] border border-[#2b2b2b] bg-[#1e1e1e] shadow-xl"
+              className={
+                isFullScreen
+                  ? "fixed inset-0 z-50 flex flex-col h-screen w-screen bg-[#1e1e1e] p-0 m-0 rounded-none border-none animate-modal-in"
+                  : "relative mt-7 w-full overflow-hidden rounded-[16px] border border-[#2b2b2b] bg-[#1e1e1e] shadow-xl"
+              }
             >
+              {/* Fullscreen Top Navigation Bar */}
+              {isFullScreen && (
+                <div className="flex shrink-0 items-center justify-between border-b border-white/10 bg-[#161616] px-3.5 py-2.5 sm:px-6 sm:py-3 z-30">
+                  <div className="flex items-center gap-2 truncate max-w-[60%] sm:max-w-[70%]">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 shrink-0" />
+                    <p className="truncate text-[12.5px] sm:text-[14px] font-bold text-white">{resource.title}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {resource.link && (
+                      <a
+                        href={getDownloadUrl(resource.link)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                        className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11.5px] sm:text-[12px] font-bold text-white hover:bg-white/20 transition-all"
+                      >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" />
+                          <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span>Download</span>
+                      </a>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleToggleFullScreen}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-oxblood px-3 py-1.5 text-[11.5px] sm:text-[12px] font-bold text-white shadow hover:bg-oxblood-dark transition-all active:scale-95"
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                      <span>Exit</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {viewerUrl ? (
                 <iframe
                   ref={iframeRef}
                   src={viewerUrl}
                   title={resource.title}
-                  className="w-full h-[460px] sm:h-[680px] md:h-[820px] border-none bg-[#2e2e2e]"
+                  className={
+                    isFullScreen
+                      ? "w-full h-full flex-1 border-none bg-[#2e2e2e]"
+                      : "w-full h-[460px] sm:h-[680px] md:h-[820px] border-none bg-[#2e2e2e]"
+                  }
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                 />
               ) : (
@@ -195,10 +293,10 @@ export default function Resource() {
               )}
 
               {/* Floating 'Open full screen' button at bottom-right corner (exact match to screenshot) */}
-              {viewerUrl && (
+              {!isFullScreen && viewerUrl && (
                 <button
                   type="button"
-                  onClick={handleFullScreen}
+                  onClick={handleToggleFullScreen}
                   className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 z-20 flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#1e1e1e]/90 px-3 py-1.5 sm:px-4 sm:py-2 text-[11.5px] sm:text-[12.5px] font-bold text-white shadow-xl backdrop-blur-md hover:bg-black transition-all hover:scale-105 active:scale-95 border border-white/10"
                   title="Open full screen"
                 >
@@ -317,17 +415,4 @@ function getViewerUrl(link?: string, fileType?: string): string {
   }
 
   return trimmed.includes("#") ? trimmed : `${trimmed}#toolbar=1&navpanes=1`;
-}
-
-function getDownloadUrl(link?: string): string {
-  if (!link) return "#";
-  const trimmed = link.trim();
-  // If it's a Google Drive link, convert to direct export download stream
-  if (trimmed.includes("drive.google.com/file/d/")) {
-    const match = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-    if (match && match[1]) {
-      return `https://drive.google.com/uc?export=download&id=${match[1]}`;
-    }
-  }
-  return trimmed;
 }

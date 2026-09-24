@@ -800,3 +800,67 @@ export async function toggleResourceUpvote(
 
   return { success: true, newCount, isUpvoted: targetUpvoted };
 }
+
+export function getDownloadUrl(link?: string): string {
+  if (!link) return "#";
+  const trimmed = link.trim();
+  // If it's a Google Drive link, convert to direct export download stream
+  if (trimmed.includes("drive.google.com/file/d/")) {
+    const match = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+    }
+  }
+  return trimmed;
+}
+
+const RESOURCE_VIEWS_KEY = "archive_resource_views";
+
+export function getResourceViews(resourceId: string, fallbackBase: number = 18): number {
+  if (!resourceId) return fallbackBase;
+  try {
+    const raw = typeof window !== "undefined" ? localStorage.getItem(RESOURCE_VIEWS_KEY) : null;
+    if (raw) {
+      const map = JSON.parse(raw);
+      if (typeof map[resourceId] === "number") {
+        return map[resourceId];
+      }
+    }
+  } catch (e) {
+    console.error("Error reading resource views:", e);
+  }
+  return fallbackBase;
+}
+
+export function incrementResourceView(resourceId: string, fallbackBase: number = 18): number {
+  if (!resourceId || typeof window === "undefined") return fallbackBase;
+  try {
+    const sessionKey = `archive_viewed_${resourceId}`;
+    let map: Record<string, number> = {};
+    const raw = localStorage.getItem(RESOURCE_VIEWS_KEY);
+    if (raw) {
+      try {
+        map = JSON.parse(raw);
+      } catch {
+        map = {};
+      }
+    }
+
+    const current = typeof map[resourceId] === "number" ? map[resourceId] : fallbackBase;
+    
+    // Only increment once per session to avoid duplicate counts on React component re-renders
+    const alreadyViewedInSession = sessionStorage.getItem(sessionKey);
+    let next = current;
+    if (!alreadyViewedInSession) {
+      next = current + 1;
+      map[resourceId] = next;
+      localStorage.setItem(RESOURCE_VIEWS_KEY, JSON.stringify(map));
+      sessionStorage.setItem(sessionKey, "true");
+    }
+
+    return next;
+  } catch (e) {
+    console.error("Error incrementing resource view:", e);
+    return fallbackBase;
+  }
+}
