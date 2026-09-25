@@ -26,7 +26,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-3 z-40 px-3 sm:px-8 animate-header-enter">
-      <div className="mx-auto flex h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-3.5 sm:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
+      <div className="relative mx-auto flex h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-3.5 sm:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
         {/* Left: Logo */}
         <Link
           to="/"
@@ -39,8 +39,8 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Center: Segmented Navigation Pill (Desktop) */}
-        <nav className="hidden items-center rounded-full bg-[#F2EFE9] p-1 sm:flex">
+        {/* Center: Segmented Navigation Pill (Desktop) - Mathematically Centered & Slightly Bigger */}
+        <nav className="hidden sm:flex sm:absolute sm:left-1/2 sm:-translate-x-1/2 items-center rounded-full bg-[#F2EFE9] p-1.5 shadow-xs">
           {nav.map((item) => {
             const active = location.pathname === item.to;
             return (
@@ -48,7 +48,7 @@ export default function Header() {
                 key={item.to}
                 to={item.to}
                 onClick={scrollToTop}
-                className={`rounded-full px-5 py-1.5 text-[13.5px] font-bold transition-all duration-200 ${
+                className={`rounded-full px-5 sm:px-6 py-1.5 sm:py-2 text-[14px] font-bold transition-all duration-200 ${
                   active
                     ? "bg-white text-ink shadow-sm scale-100"
                     : "text-ink-soft hover:text-ink hover:bg-black/5"

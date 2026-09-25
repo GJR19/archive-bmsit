@@ -282,27 +282,27 @@ function CourseWindowResourceRow({
             rel="noopener noreferrer"
             download
             title="Download file"
-            className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2.5 py-1 text-[11px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink hover:bg-paper active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12px]"
+            aria-label="Download file"
+            className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink hover:bg-paper active:scale-95 shrink-0"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink-soft">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="text-ink-soft sm:w-3.5 sm:h-3.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
-            <span>Download</span>
           </a>
         ) : (
           <Link
             to={`/resource/${resource.id}`}
-            title="View and download file"
-            className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2.5 py-1 text-[11px] font-bold text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink hover:bg-paper active:scale-95 sm:px-3 sm:py-1.5 sm:text-[12px]"
+            title="Download file"
+            aria-label="Download file"
+            className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition-all duration-150 hover:border-ink hover:text-ink hover:bg-paper active:scale-95 shrink-0"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink-soft">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="text-ink-soft sm:w-3.5 sm:h-3.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
-            <span>Download</span>
           </Link>
         )}
       </div>
