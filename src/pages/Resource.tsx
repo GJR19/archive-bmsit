@@ -369,7 +369,7 @@ export default function Resource() {
               </div>
               <div className="rounded-lg bg-paper/60 p-3 border border-line/60">
                 <span className="block text-xs font-medium text-ink-faint uppercase tracking-wider">Contributor</span>
-                <span className="mt-1 block font-bold text-ink">{resource.contributor || "Anonymous"}</span>
+                <span className="mt-1 block font-bold text-ink uppercase">{resource.contributor || "Anonymous"}</span>
               </div>
               <div className="rounded-lg bg-paper/60 p-3 border border-line/60">
                 <span className="block text-xs font-medium text-ink-faint uppercase tracking-wider">Resource Type</span>

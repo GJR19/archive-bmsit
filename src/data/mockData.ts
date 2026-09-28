@@ -1197,7 +1197,7 @@ export const courses: Course[] = [
 export const contributors: Contributor[] = [
   {
     id: "cnt-1",
-    name: "Gururaj Reddy",
+    name: "GURURAJ REDDY",
     usn: "1BY24AI049",
     branch: "AIML",
     contributions: 76,
@@ -1210,7 +1210,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-2",
-    name: "Jyothiradithya J",
+    name: "JYOTHIRADITHYA J",
     usn: "1BY24AI056",
     branch: "AIML",
     contributions: 42,
@@ -1223,7 +1223,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-3",
-    name: "V Sathya Sai",
+    name: "V SATHYA SAI",
     usn: "1BY24AI182",
     branch: "AIML",
     contributions: 36,
@@ -1236,7 +1236,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-4",
-    name: "S Sumedh",
+    name: "S SUMEDH",
     usn: "1TD24AI163",
     branch: "AIML",
     contributions: 54,
@@ -1249,7 +1249,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-5",
-    name: "V Srisudarshan",
+    name: "V SRISUDARSHAN",
     usn: "1BY24AI190",
     branch: "AIML",
     contributions: 46,
@@ -1262,7 +1262,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-10",
-    name: "M Owaiz Sharief",
+    name: "M OWAIZ SHARIEF",
     usn: "1BY25AI416",
     branch: "AIML",
     contributions: 30,
@@ -1275,7 +1275,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-6",
-    name: "Pranay P",
+    name: "PRANAY P",
     usn: "1TD24AI130",
     branch: "AIML",
     contributions: 28,
@@ -1288,7 +1288,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-7",
-    name: "Hemanth A",
+    name: "HEMANTH A",
     usn: "1BY25AI412",
     branch: "AIML",
     contributions: 26,
@@ -1301,7 +1301,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-8",
-    name: "P Sai Punith",
+    name: "P SAI PUNITH",
     usn: "1TD24AI136",
     branch: "AIML",
     contributions: 23,
@@ -1314,7 +1314,7 @@ export const contributors: Contributor[] = [
   },
   {
     id: "cnt-9",
-    name: "K Bhargav",
+    name: "K BHARGAV",
     usn: "1TD24AI087",
     branch: "AIML",
     contributions: 16,
@@ -1337,7 +1337,7 @@ export const resources: Resource[] = [
     "semester": 4,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Gururaj Reddy",
+    "contributor": "GURURAJ REDDY",
     "uploadDate": "2024-08-01",
     "upvotes": 48,
     "link": "https://www.amazon.in/s?k=Introduction+to+the+Design+and+Analysis+of+Algorithms+2nd+Edition+Anany+Levitin"
@@ -1351,7 +1351,7 @@ export const resources: Resource[] = [
     "semester": 5,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Jyothiradithya J",
+    "contributor": "JYOTHIRADITHYA J",
     "uploadDate": "2024-08-01",
     "upvotes": 42,
     "link": "https://www.amazon.in/s?k=Artificial+Intelligence+A+Modern+Approach+4th+Edition+Russell+Norvig"
@@ -1365,7 +1365,7 @@ export const resources: Resource[] = [
     "semester": 1,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "V Srisudarshan",
+    "contributor": "V SRISUDARSHAN",
     "uploadDate": "2024-08-01",
     "upvotes": 16,
     "link": "https://www.amazon.in/s?k=Engineering+Graphics+K+R+Gopalakrishna+32nd+Edition"
@@ -1379,7 +1379,7 @@ export const resources: Resource[] = [
     "semester": 6,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "S Sumedh",
+    "contributor": "S SUMEDH",
     "uploadDate": "2024-08-01",
     "upvotes": 72,
     "link": "https://www.amazon.in/s?k=Computer+Vision+Algorithms+and+Applications+2nd+Edition+Richard+Szeliski"
@@ -1393,7 +1393,7 @@ export const resources: Resource[] = [
     "semester": 5,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "K Bhargav",
+    "contributor": "K BHARGAV",
     "uploadDate": "2024-08-01",
     "upvotes": 16,
     "link": "https://www.amazon.in/s?k=Data+Communications+and+Networking+5th+Edition+Behrouz+Forouzan"
@@ -1407,7 +1407,7 @@ export const resources: Resource[] = [
     "semester": 3,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Pranay P",
+    "contributor": "PRANAY P",
     "uploadDate": "2024-08-01",
     "upvotes": 43,
     "link": "https://www.amazon.in/s?k=Fundamentals+of+Data+Structures+in+C+Horowitz+Sahni+2nd+Edition"
@@ -1421,7 +1421,7 @@ export const resources: Resource[] = [
     "semester": 4,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "V Sathya Sai",
+    "contributor": "V SATHYA SAI",
     "uploadDate": "2024-08-01",
     "upvotes": 20,
     "link": "https://www.amazon.in/s?k=Fundamentals+of+Database+Systems+7th+Edition+Elmasri+Navathe"
@@ -1435,7 +1435,7 @@ export const resources: Resource[] = [
     "semester": 3,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "P Sai Punith",
+    "contributor": "P SAI PUNITH",
     "uploadDate": "2024-08-01",
     "upvotes": 29,
     "link": "https://www.amazon.in/s?k=Digital+Design+with+an+Introduction+to+Verilog+Design+Mano+Ciletti+6th+Edition"
@@ -1449,7 +1449,7 @@ export const resources: Resource[] = [
     "semester": 1,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Hemanth A",
+    "contributor": "HEMANTH A",
     "uploadDate": "2024-08-01",
     "upvotes": 26,
     "link": "https://www.amazon.in/s?k=Professional+Writing+Skills+in+English+Fillip+Learning"
@@ -1463,7 +1463,7 @@ export const resources: Resource[] = [
     "semester": 2,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "M Owaiz Sharief",
+    "contributor": "M OWAIZ SHARIEF",
     "usn": "1BY25AI416",
     "uploadDate": "2024-08-01",
     "upvotes": 42,
@@ -1478,7 +1478,7 @@ export const resources: Resource[] = [
     "semester": 2,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Jyothiradithya J",
+    "contributor": "JYOTHIRADITHYA J",
     "uploadDate": "2024-08-01",
     "upvotes": 26,
     "link": "https://www.amazon.in/s?k=Constitution+of+India+for+Competitive+Exams+Naidhruva+Edutech"
@@ -1492,7 +1492,7 @@ export const resources: Resource[] = [
     "semester": 1,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "V Srisudarshan",
+    "contributor": "V SRISUDARSHAN",
     "uploadDate": "2024-08-01",
     "upvotes": 16,
     "link": "https://www.amazon.in/s?k=Electronic+Circuits+Fundamentals+and+Applications+Mike+Tooley"
@@ -1506,7 +1506,7 @@ export const resources: Resource[] = [
     "semester": 1,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "S Sumedh",
+    "contributor": "S SUMEDH",
     "uploadDate": "2024-08-01",
     "upvotes": 44,
     "link": "https://www.amazon.in/s?k=Automate+the+Boring+Stuff+with+Python+Al+Sweigart"
@@ -1520,7 +1520,7 @@ export const resources: Resource[] = [
     "semester": 4,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "K Bhargav",
+    "contributor": "K BHARGAV",
     "uploadDate": "2024-08-01",
     "upvotes": 44,
     "link": "https://www.amazon.in/s?k=Introduction+to+IoT+Sudip+Misra+Anandarup+Mukherjee+Arijit+Roy"
@@ -1534,7 +1534,7 @@ export const resources: Resource[] = [
     "semester": 1,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Pranay P",
+    "contributor": "PRANAY P",
     "uploadDate": "2024-08-01",
     "upvotes": 24,
     "link": "https://www.amazon.in/BS-Grewal-Engineering-Mathematics-2023-24/dp/B0CKBZZ8NH"
@@ -1548,7 +1548,7 @@ export const resources: Resource[] = [
     "semester": 2,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "V Sathya Sai",
+    "contributor": "V SATHYA SAI",
     "uploadDate": "2024-08-01",
     "upvotes": 25,
     "link": "https://www.amazon.in/BS-Grewal-Engineering-Mathematics-2023-24/dp/B0CKBZZ8NH"
@@ -1562,7 +1562,7 @@ export const resources: Resource[] = [
     "semester": 3,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "P Sai Punith",
+    "contributor": "P SAI PUNITH",
     "uploadDate": "2024-08-01",
     "upvotes": 32,
     "link": "https://www.amazon.in/s?k=Probability+Statistics+for+Engineers+Scientists+Walpole+9th+Edition"
@@ -1576,7 +1576,7 @@ export const resources: Resource[] = [
     "semester": 4,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Hemanth A",
+    "contributor": "HEMANTH A",
     "uploadDate": "2024-08-01",
     "upvotes": 23,
     "link": "https://www.amazon.in/s?k=MongoDB+The+Definitive+Guide+2nd+Edition+Kristina+Chodorow"
@@ -1590,7 +1590,7 @@ export const resources: Resource[] = [
     "semester": 3,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Gururaj Reddy",
+    "contributor": "GURURAJ REDDY",
     "uploadDate": "2024-08-01",
     "upvotes": 35,
     "link": "https://www.amazon.in/s?k=C%2B%2B+The+Complete+Reference+4th+Edition+Herbert+Schildt"
@@ -1604,7 +1604,7 @@ export const resources: Resource[] = [
     "semester": 4,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Jyothiradithya J",
+    "contributor": "JYOTHIRADITHYA J",
     "uploadDate": "2024-08-01",
     "upvotes": 38,
     "link": "https://www.amazon.in/Operating-System-Concepts-Abraham-Silberschatz/dp/B074G46V8F"
@@ -1618,7 +1618,7 @@ export const resources: Resource[] = [
     "semester": 5,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "V Srisudarshan",
+    "contributor": "V SRISUDARSHAN",
     "uploadDate": "2024-08-01",
     "upvotes": 28,
     "link": "https://www.amazon.in/s?k=Operations+Research+S+D+Sharma+Kedar+Nath+Ram+Nath"
@@ -1632,7 +1632,7 @@ export const resources: Resource[] = [
     "semester": 1,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "S Sumedh",
+    "contributor": "S SUMEDH",
     "uploadDate": "2024-08-01",
     "upvotes": 62,
     "link": "https://www.amazon.in/s?k=Computer+Fundamentals+and+Programming+in+C+Reema+Thareja+2nd+Edition"
@@ -1646,7 +1646,7 @@ export const resources: Resource[] = [
     "semester": 3,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Gururaj Reddy",
+    "contributor": "GURURAJ REDDY",
     "uploadDate": "2024-08-01",
     "upvotes": 35,
     "link": "https://www.amazon.in/s?k=Version+Control+with+Git+3rd+Edition+Prem+Kumar+Ponuthorai+Jon+Loeliger"
@@ -1660,7 +1660,7 @@ export const resources: Resource[] = [
     "semester": 5,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Jyothiradithya J",
+    "contributor": "JYOTHIRADITHYA J",
     "uploadDate": "2024-08-01",
     "upvotes": 35,
     "link": "https://www.amazon.in/s?k=Research+Methodology+Kothari+Gaurav+Garg"
@@ -1674,7 +1674,7 @@ export const resources: Resource[] = [
     "semester": 4,
     "fileType": "Link",
     "fileSizeMb": 0,
-    "contributor": "Gururaj Reddy",
+    "contributor": "GURURAJ REDDY",
     "uploadDate": "2024-08-01",
     "upvotes": 41,
     "link": "https://www.amazon.in/s?k=Software+Engineering+9th+Edition+Ian+Sommerville"

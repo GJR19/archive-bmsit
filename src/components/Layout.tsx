@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main key={location.pathname} className="flex-1 animate-page-enter">
+      <main key={location.pathname} className="flex-1 animate-page-enter pb-20 md:pb-0">
         {children}
       </main>
       <Footer />

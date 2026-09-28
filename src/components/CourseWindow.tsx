@@ -252,7 +252,7 @@ function CourseWindowResourceRow({
           )}
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] font-medium text-ink-faint">
-          <span>by {resource.contributor}</span>
+          <span className="uppercase">by {resource.contributor}</span>
           <span aria-hidden>·</span>
           <UpvoteBadge
             count={resource.upvotes}

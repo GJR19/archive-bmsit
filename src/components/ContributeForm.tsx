@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import UploadDropzone from "./UploadDropzone";
 import Button from "./Button";
 import { Field, Select, TextInput } from "./FormField";
@@ -6,6 +6,7 @@ import type { ResourceType } from "../data/types";
 import { RESOURCE_TYPE_LABEL } from "../data/types";
 import { useArchive } from "../context/ArchiveContext";
 import { submitContributorResource } from "../services/resourceService";
+import { contributors as mockContributors } from "../data/mockData";
 
 const resourceTypeOptions: ResourceType[] = ["notes", "past-paper", "extras", "reference"];
 
@@ -19,7 +20,7 @@ export default function ContributeForm({
   defaultType?: ResourceType;
   onSubmitted?: () => void;
 }) {
-  const { courses } = useArchive();
+  const { courses, resources } = useArchive();
   const courseOptions = useMemo(() => {
     const nonKannada = courses.filter(
       (c) => !c.title.toUpperCase().includes("KANNADA")
@@ -43,6 +44,124 @@ export default function ContributeForm({
   const [studentUsn, setStudentUsn] = useState("");
   const [branch, setBranch] = useState("AI&ML");
   const [refLink, setRefLink] = useState("");
+
+  // Contributor Autocomplete Dropdown State
+  const [nameFocused, setNameFocused] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const nameInputWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Aggregate unique contributors with name, usn, branch
+  const knownContributors = useMemo(() => {
+    const map = new Map<string, { name: string; usn: string; branch: string }>();
+
+    // Add base contributors
+    mockContributors.forEach((c) => {
+      const norm = c.name.trim().toUpperCase();
+      map.set(norm, {
+        name: norm,
+        usn: (c.usn || "").trim().toUpperCase(),
+        branch: c.branch === "AIML" ? "AI&ML" : c.branch,
+      });
+    });
+
+    // Add from live resources if any
+    resources.forEach((r) => {
+      if (!r.contributor || r.contributor.toLowerCase() === "anonymous") return;
+      const norm = r.contributor.trim().toUpperCase();
+      if (!map.has(norm)) {
+        let b = "AI&ML";
+        if (r.usn?.includes("Branch: ")) {
+          const match = r.usn.match(/Branch:\s*([A-Za-z&]+)/);
+          if (match) b = match[1] === "AIML" ? "AI&ML" : match[1];
+        } else if (r.usn?.includes("CSE")) {
+          b = "CSE";
+        } else if (r.usn?.includes("ISE")) {
+          b = "ISE";
+        } else if (r.usn?.includes("ECE")) {
+          b = "ECE";
+        } else if (r.usn?.includes("EEE")) {
+          b = "EEE";
+        } else if (r.usn?.includes("MECH")) {
+          b = "MECH";
+        } else if (r.usn?.includes("CIVIL")) {
+          b = "CIVIL";
+        }
+        map.set(norm, {
+          name: norm,
+          usn: (r.usn ? r.usn.split(" · ")[0].trim() : "").toUpperCase(),
+          branch: b,
+        });
+      }
+    });
+
+    return Array.from(map.values());
+  }, [resources]);
+
+  const filteredContributors = useMemo(() => {
+    const q = studentName.trim().toUpperCase();
+    if (!q) {
+      return knownContributors.slice(0, 6);
+    }
+    return knownContributors
+      .filter((c) => {
+        const name = c.name.toUpperCase();
+        const usn = c.usn.toUpperCase();
+        return (
+          name.includes(q) ||
+          usn.includes(q) ||
+          name.split(" ").some((part) => part.startsWith(q))
+        );
+      })
+      .slice(0, 8);
+  }, [knownContributors, studentName]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        nameInputWrapperRef.current &&
+        !nameInputWrapperRef.current.contains(event.target as Node)
+      ) {
+        setNameFocused(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleSelectContributor(c: { name: string; usn: string; branch: string }) {
+    setStudentName(c.name.toUpperCase());
+    if (c.usn) {
+      setStudentUsn(c.usn.toUpperCase());
+    }
+    if (c.branch) {
+      setBranch(c.branch);
+    }
+    setNameFocused(false);
+    setHighlightedIndex(-1);
+  }
+
+  function handleNameKeyDown(e: React.KeyboardEvent) {
+    if (!nameFocused || filteredContributors.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev < filteredContributors.length - 1 ? prev + 1 : 0
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev > 0 ? prev - 1 : filteredContributors.length - 1
+      );
+    } else if (e.key === "Enter" && highlightedIndex >= 0) {
+      e.preventDefault();
+      handleSelectContributor(filteredContributors[highlightedIndex]);
+    } else if (e.key === "Escape") {
+      setNameFocused(false);
+      setHighlightedIndex(-1);
+    }
+  }
 
   const isReference = type === "reference";
 
@@ -195,15 +314,63 @@ export default function ContributeForm({
 
       {/* Contributor Name, Branch, and USN */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-        <Field label="Student Name">
-          <TextInput
-            placeholder="YOUR FULL NAME"
-            disabled={anonymous}
-            required={!anonymous}
-            value={studentName}
-            onChange={(e) => setStudentName(e.target.value.toUpperCase())}
-            className="uppercase"
-          />
+        <Field label="Student Name" hint="Type to search and auto-fill details">
+          <div className="relative" ref={nameInputWrapperRef}>
+            <TextInput
+              placeholder="YOUR FULL NAME"
+              disabled={anonymous}
+              required={!anonymous}
+              value={studentName}
+              onFocus={() => setNameFocused(true)}
+              onChange={(e) => {
+                setStudentName(e.target.value.toUpperCase());
+                setNameFocused(true);
+                setHighlightedIndex(-1);
+              }}
+              onKeyDown={handleNameKeyDown}
+              className="uppercase font-semibold tracking-wide"
+              autoComplete="off"
+            />
+
+            {/* Dropdown Menu for Similar Names */}
+            {nameFocused && !anonymous && filteredContributors.length > 0 && (
+              <div
+                ref={dropdownRef}
+                className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-lg border border-line-strong bg-white p-1.5 shadow-lift backdrop-blur-md animate-modal-in"
+              >
+                <div className="px-2 py-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-faint">
+                  {studentName.trim() ? "Matching Contributors" : "Suggested Contributors"}
+                </div>
+                {filteredContributors.map((c, idx) => (
+                  <button
+                    key={c.name}
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      handleSelectContributor(c);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-2 text-left transition-colors ${
+                      idx === highlightedIndex
+                        ? "bg-oxblood-tint text-oxblood-dark"
+                        : "hover:bg-paper text-ink"
+                    }`}
+                  >
+                    <div>
+                      <p className="text-[13.5px] font-bold uppercase tracking-tight text-ink">
+                        {c.name}
+                      </p>
+                      <p className="text-[11.5px] text-ink-faint">
+                        {c.usn ? `${c.usn} · ` : ""}{c.branch}
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-semibold text-oxblood bg-oxblood-tint px-2 py-0.5 rounded-full shrink-0">
+                      Auto-fill ↵
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </Field>
 
         <Field label="Branch / Department">

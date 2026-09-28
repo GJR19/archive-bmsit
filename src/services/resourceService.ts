@@ -465,15 +465,19 @@ export async function submitContributorResource({
       // ignore
     }
 
+    const finalContributor = contributor?.trim();
+    const cleanContributor = !finalContributor || finalContributor.toLowerCase() === "anonymous" ? "Anonymous" : finalContributor.toUpperCase();
+    const cleanUsn = usn?.trim().toUpperCase() || "";
+
     // Embed branch and requested course into USN metadata string
     const meta: string[] = [];
-    if (usn) meta.push(usn);
-    if (branch) meta.push(`Branch: ${branch}`);
-    if (requestedCourse) meta.push(`Course: ${requestedCourse}`);
+    if (cleanUsn) meta.push(cleanUsn);
+    if (branch) meta.push(`Branch: ${branch.toUpperCase()}`);
+    if (requestedCourse) meta.push(`Course: ${requestedCourse.toUpperCase()}`);
     const enrichedUsn = meta.join(" · ");
 
     const { error: insertErr } = await supabase.from("resources").insert({
-      title,
+      title: title.toUpperCase(),
       course_id: courseId,
       type,
       academic_year: academicYear,
@@ -481,7 +485,7 @@ export async function submitContributorResource({
       file_type: ext,
       file_size_mb: fileSizeMb,
       file_url: finalFileUrl,
-      contributor: contributor || "Anonymous",
+      contributor: cleanContributor,
       usn: enrichedUsn,
       status: "pending",
       upvotes: 0,

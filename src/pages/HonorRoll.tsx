@@ -26,6 +26,7 @@ export default function HonorRoll() {
 
     const list: Contributor[] = baseContributors.map((c) => ({
       ...c,
+      name: c.name.trim().toUpperCase(),
       contributions: 0,
       points: 0,
       pastPapers: 0,
@@ -76,9 +77,9 @@ export default function HonorRoll() {
 
         list.push({
           id: "c-" + normName.replace(/[^a-z0-9]/g, "-"),
-          name: r.contributor.trim(),
-          usn: r.usn ? r.usn.split(" · ")[0].trim() : "",
-          branch: b,
+          name: r.contributor.trim().toUpperCase(),
+          usn: r.usn ? r.usn.split(" · ")[0].trim().toUpperCase() : "",
+          branch: b.toUpperCase(),
           contributions: 1,
           points: pts,
           pastPapers: r.type === "past-paper" ? 1 : 0,
@@ -263,7 +264,7 @@ export default function HonorRoll() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-ink">{c.name}</span>
+                          <span className="font-medium text-ink uppercase">{c.name}</span>
                           {c.usn && (
                             <span className="rounded bg-[#EDE8DE] px-2 py-0.5 font-mono text-[11px] font-semibold tracking-wider text-ink-soft">
                               {c.usn}
@@ -322,7 +323,7 @@ export default function HonorRoll() {
                     <span className="call-number w-6">{i < 3 ? ["🥇", "🥈", "🥉"][i] : `#${i + 1}`}</span>
                     <div>
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <p className="text-[14px] font-bold text-ink">{c.name}</p>
+                        <p className="text-[14px] font-bold text-ink uppercase">{c.name}</p>
                         {c.usn && (
                           <span className="rounded bg-[#EDE8DE] px-1.5 py-0.5 font-mono text-[10.5px] font-semibold text-ink-soft">
                             {c.usn}
