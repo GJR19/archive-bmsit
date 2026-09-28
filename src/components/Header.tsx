@@ -110,20 +110,20 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-2 sm:top-3 z-40 px-3 sm:px-6 lg:px-8 animate-header-enter">
-        <div className="relative mx-auto flex h-20 md:h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-4.5 sm:px-5 lg:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
-          {/* Left: Logo */}
+        <div className="relative mx-auto flex h-20 md:h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 pl-5 sm:pl-6 pr-3 sm:pr-4 md:px-5 lg:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
+          {/* Left: Logo & ARCHIVE Text */}
           <Link
             to="/"
             onClick={scrollToTop}
-            className="flex items-center gap-2.5 transition-opacity hover:opacity-85 shrink-0 z-10"
+            className="flex items-center gap-3 sm:gap-3.5 transition-opacity hover:opacity-85 shrink-0 z-10"
           >
-            <div className="md:hidden">
-              <Logo size={26} />
+            <div className="md:hidden flex items-center">
+              <Logo size={42} />
             </div>
             <div className="hidden md:block">
               <Logo size={20} />
             </div>
-            <span className="font-serif text-[19px] md:text-[17px] font-bold tracking-tight text-ink">
+            <span className="font-serif text-[23px] sm:text-[25px] md:text-[17px] font-bold tracking-tight text-ink">
               ARCHIVE
             </span>
           </Link>
@@ -149,14 +149,15 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Right: Search, Contribute & Mobile Menu */}
+          {/* Right: Search (Desktop), Contribute (Desktop) & Mobile 3-Lines Menu */}
           <div className="flex items-center gap-2.5 md:gap-2 lg:gap-3 shrink-0 z-10">
+            {/* Search Button - Desktop only */}
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search archive"
-              className="group flex h-11 w-11 md:h-auto md:w-auto items-center justify-center md:justify-start gap-2 rounded-full border border-line-strong bg-white p-0 md:p-2 sm:px-2.5 lg:px-3.5 sm:py-1.5 text-[13px] font-semibold text-ink-soft shadow-xs hover:border-ink hover:shadow-sm active:scale-[0.98] transition-all duration-200"
+              className="hidden md:flex items-center justify-start gap-2 rounded-full border border-line-strong bg-white p-2 sm:px-2.5 lg:px-3.5 sm:py-1.5 text-[13px] font-semibold text-ink-soft shadow-xs hover:border-ink hover:shadow-sm active:scale-[0.98] transition-all duration-200"
             >
-              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 md:w-[15px] md:h-[15px] text-ink-faint transition-transform duration-200 group-hover:scale-110 shrink-0">
+              <svg viewBox="0 0 24 24" fill="none" className="w-[15px] h-[15px] text-ink-faint transition-transform duration-200 group-hover:scale-110 shrink-0">
                 <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.5" />
                 <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
@@ -174,14 +175,14 @@ export default function Header() {
               Contribute
             </Link>
 
-            {/* Mobile Navigation Toggle (Mobile Only) - Height 11 w 11 with 3 Lines */}
+            {/* Mobile Navigation Toggle (Mobile Only) - Big Concentric Button matching media_1790597064759.png */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Toggle navigation menu"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-paper/90 text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0"
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-line/80 bg-[#FAF7EE] text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0 shadow-2xs"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
                 <line x1="4" y1="7" x2="20" y2="7" />
                 <line x1="4" y1="12" x2="20" y2="12" />
                 <line x1="4" y1="17" x2="20" y2="17" />
@@ -198,17 +199,17 @@ export default function Header() {
         createPortal(
           <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black/45 backdrop-blur-md px-3 pt-2 sm:pt-3 md:hidden overflow-y-auto animate-backdrop-in">
             {/* Top Bar inside modal overlay matching mobile header */}
-            <div className="mx-auto flex h-20 w-full max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-4.5 sm:px-5 shadow-sm backdrop-blur-md mb-4 shrink-0">
+            <div className="mx-auto flex h-20 w-full max-w-content items-center justify-between rounded-full border border-line bg-white/95 pl-5 sm:pl-6 pr-3 sm:pr-4 shadow-sm backdrop-blur-md mb-4 shrink-0">
               <Link
                 to="/"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   scrollToTop();
                 }}
-                className="flex items-center gap-2.5 transition-opacity hover:opacity-85 shrink-0"
+                className="flex items-center gap-3 sm:gap-3.5 transition-opacity hover:opacity-85 shrink-0"
               >
-                <Logo size={26} />
-                <span className="font-serif text-[19px] font-bold tracking-tight text-ink">
+                <Logo size={42} />
+                <span className="font-serif text-[23px] sm:text-[25px] font-bold tracking-tight text-ink">
                   ARCHIVE
                 </span>
               </Link>
@@ -218,9 +219,9 @@ export default function Header() {
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close navigation menu"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1C1B18] text-white shadow-sm hover:bg-black active:scale-95 transition-all shrink-0"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1C1B18] text-white shadow-sm hover:bg-black active:scale-95 transition-all shrink-0"
               >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
