@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { departments } from "../data/mockData";
 import { useArchive } from "../context/ArchiveContext";
 import { filterAndRankCourses } from "../lib/courseSearch";
 
@@ -77,7 +76,6 @@ export default function SearchOverlay({
             </p>
           )}
           {results.map((c) => {
-            const dept = departments.find((d) => d.id === c.departmentId);
             const fileCount = resources.filter((r) => r.courseId === c.id).length + (c.referenceBook ? 1 : 0);
             return (
               <button
@@ -88,10 +86,7 @@ export default function SearchOverlay({
                 }}
                 className="flex w-full items-center justify-between rounded-[5px] px-3 py-2.5 text-left transition-all duration-150 hover:bg-ink/[0.04] active:scale-[0.99]"
               >
-                <span>
-                  <span className="block text-[14.5px] text-ink">{c.title}</span>
-                  <span className="block text-[12.5px] text-ink-faint">{dept?.short}</span>
-                </span>
+                <span className="text-[14.5px] font-medium text-ink">{c.title}</span>
                 <span className="call-number">{fileCount} {fileCount === 1 ? "file" : "files"}</span>
               </button>
             );
