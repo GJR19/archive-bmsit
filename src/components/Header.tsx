@@ -171,31 +171,6 @@ export default function Header() {
         </div>
       )}
 
-      {/* Mobile Floating Bottom Navigation Dock (Always Visible on Mobile) */}
-      <nav
-        aria-label="Mobile Navigation"
-        className="fixed bottom-3.5 left-1/2 -translate-x-1/2 z-40 flex md:hidden items-center gap-1 rounded-full border border-line-strong bg-white/95 p-1.5 shadow-lift backdrop-blur-md transition-all duration-300 w-auto max-w-[calc(100vw-24px)]"
-      >
-        {nav.map((item) => {
-          const active = location.pathname === item.to;
-          return (
-            <Link
-              key={item.to}
-              to={item.to}
-              onClick={scrollToTop}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-bold transition-all duration-200 active:scale-95 whitespace-nowrap ${
-                active
-                  ? "bg-[#7A2E2A] text-white shadow-xs"
-                  : "text-ink-soft hover:text-ink hover:bg-black/5"
-              }`}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
