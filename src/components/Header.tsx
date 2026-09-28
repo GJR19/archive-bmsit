@@ -175,6 +175,19 @@ export default function Header() {
               Contribute
             </Link>
 
+            {/* Mobile Search Button (Mobile Only) - Exact same size as 3 lines button */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search archive"
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-line/80 bg-[#FAF7EE] text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0 shadow-2xs"
+            >
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21L16.65 16.65" />
+              </svg>
+            </button>
+
             {/* Mobile Navigation Toggle (Mobile Only) - Big Concentric Button matching media_1790597064759.png */}
             <button
               type="button"
