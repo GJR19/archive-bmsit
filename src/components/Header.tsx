@@ -58,16 +58,21 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-3 z-40 px-3 sm:px-6 lg:px-8 animate-header-enter">
-      <div className="relative mx-auto flex h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-3.5 sm:px-5 lg:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
+    <header className="sticky top-2 sm:top-3 z-40 px-3 sm:px-6 lg:px-8 animate-header-enter">
+      <div className="relative mx-auto flex h-16 md:h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-4 sm:px-5 lg:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
         {/* Left: Logo */}
         <Link
           to="/"
           onClick={scrollToTop}
-          className="flex items-center gap-2 sm:gap-2.5 transition-opacity hover:opacity-85 shrink-0 z-10"
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-85 shrink-0 z-10"
         >
-          <Logo size={20} />
-          <span className="font-serif text-[16px] sm:text-[17px] font-bold tracking-tight text-ink">
+          <div className="md:hidden">
+            <Logo size={24} />
+          </div>
+          <div className="hidden md:block">
+            <Logo size={20} />
+          </div>
+          <span className="font-serif text-[18px] md:text-[17px] font-bold tracking-tight text-ink">
             ARCHIVE
           </span>
         </Link>
@@ -94,13 +99,13 @@ export default function Header() {
         </nav>
 
         {/* Right: Search, Contribute & Mobile Menu */}
-        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 shrink-0 z-10">
+        <div className="flex items-center gap-2 md:gap-2 lg:gap-3 shrink-0 z-10">
           <button
             onClick={() => setSearchOpen(true)}
             aria-label="Search archive"
-            className="group flex items-center gap-2 rounded-full border border-line-strong bg-white p-2 sm:px-2.5 lg:px-3.5 sm:py-1.5 text-[13px] font-semibold text-ink-soft shadow-xs hover:border-ink hover:shadow-sm active:scale-[0.98] transition-all duration-200"
+            className="group flex h-10 w-10 md:h-auto md:w-auto items-center justify-center md:justify-start gap-2 rounded-full border border-line-strong bg-white p-0 md:p-2 sm:px-2.5 lg:px-3.5 sm:py-1.5 text-[13px] font-semibold text-ink-soft shadow-xs hover:border-ink hover:shadow-sm active:scale-[0.98] transition-all duration-200"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-ink-faint transition-transform duration-200 group-hover:scale-110 shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 md:w-[15px] md:h-[15px] text-ink-faint transition-transform duration-200 group-hover:scale-110 shrink-0">
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.5" />
               <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
             </svg>
@@ -110,29 +115,31 @@ export default function Header() {
             </kbd>
           </button>
 
+          {/* Contribute Button - Hidden on Mobile, Visible on Tablet & Desktop */}
           <Link
             to="/contribute"
-            className="rounded-full bg-[#1C1B18] px-3.5 py-1.5 text-[12px] font-bold text-white shadow-sm hover:bg-black hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] lg:px-5 lg:py-2 lg:text-[13px] transition-all duration-200 shrink-0"
+            className="hidden md:inline-flex rounded-full bg-[#1C1B18] px-3.5 py-1.5 text-[12px] font-bold text-white shadow-sm hover:bg-black hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] lg:px-5 lg:py-2 lg:text-[13px] transition-all duration-200 shrink-0"
           >
             Contribute
           </Link>
 
-          {/* Mobile Navigation Toggle (Mobile Only) */}
+          {/* Mobile Navigation Toggle (Mobile Only) - Bigger Tap Target & 3 Lines Icon */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-paper/80 text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-paper/90 text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0"
           >
             {mobileMenuOpen ? (
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="4" y1="8" x2="20" y2="8" />
-                <line x1="4" y1="16" x2="20" y2="16" />
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="17" x2="20" y2="17" />
               </svg>
             )}
           </button>
@@ -167,6 +174,24 @@ export default function Header() {
                 </Link>
               );
             })}
+            <div className="pt-1 mt-1 border-t border-line">
+              <Link
+                to="/contribute"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  scrollToTop();
+                }}
+                className="flex items-center justify-between rounded-xl px-4 py-2.5 text-[14px] font-bold bg-[#1C1B18] text-white shadow-xs hover:bg-black transition-colors"
+              >
+                <span className="flex items-center gap-2.5">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  <span>Contribute Resource</span>
+                </span>
+                <span className="text-[12px] opacity-80">→</span>
+              </Link>
+            </div>
           </nav>
         </div>
       )}
