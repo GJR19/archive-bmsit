@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import SearchOverlay from "./SearchOverlay";
@@ -12,21 +13,44 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  // Lock body scroll and listen for Escape key when mobile menu modal is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setMobileMenuOpen(false);
+      };
+      window.addEventListener("keydown", onKeyDown);
+      return () => {
+        document.body.style.overflow = prevOverflow;
+        window.removeEventListener("keydown", onKeyDown);
+      };
+    }
+  }, [mobileMenuOpen]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   };
 
+  // Desktop segmented pill items
   const nav = [
+    { to: "/", label: "Archive" },
+    { to: "/bookshelf", label: "Bookshelf" },
+    { to: "/honor-roll", label: "Honor Roll" },
+  ];
+
+  // Mobile modal navigation items matching media_1790596492143.png
+  const mobileNavItems = [
     {
       to: "/",
       label: "Archive",
       icon: (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="3" width="20" height="5" rx="1" />
-          <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
-          <path d="M10 12h4" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="4" y="4" width="16" height="16" rx="3" />
+          <rect x="8" y="9" width="8" height="4" rx="1" />
         </svg>
       ),
     },
@@ -34,10 +58,10 @@ export default function Header() {
       to: "/bookshelf",
       label: "Bookshelf",
       icon: (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
-          <path d="M6 6h10" />
-          <path d="M6 10h10" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+          <line x1="6" y1="7" x2="18" y2="7" />
+          <line x1="6" y1="12" x2="15" y2="12" />
+          <line x1="6" y1="17" x2="11" y2="17" />
         </svg>
       ),
     },
@@ -45,7 +69,7 @@ export default function Header() {
       to: "/honor-roll",
       label: "Honor Roll",
       icon: (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
           <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
           <path d="M4 22h16" />
@@ -55,148 +79,244 @@ export default function Header() {
         </svg>
       ),
     },
+    {
+      to: "/releases",
+      label: "Releases",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+          <line x1="12" y1="4" x2="12" y2="7" />
+          <line x1="12" y1="17" x2="12" y2="20" />
+          <line x1="4" y1="12" x2="7" y2="12" />
+          <line x1="17" y1="12" x2="20" y2="12" />
+          <line x1="6.34" y1="6.34" x2="8.46" y2="8.46" />
+          <line x1="15.54" y1="15.54" x2="17.66" y2="17.66" />
+          <line x1="6.34" y1="17.66" x2="8.46" y2="15.54" />
+          <line x1="15.54" y1="8.46" x2="17.66" y2="6.34" />
+        </svg>
+      ),
+    },
+    {
+      to: "/terms",
+      label: "Terms & Rules",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+      ),
+    },
   ];
 
   return (
-    <header className="sticky top-2 sm:top-3 z-40 px-3 sm:px-6 lg:px-8 animate-header-enter">
-      <div className="relative mx-auto flex h-16 md:h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-4 sm:px-5 lg:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
-        {/* Left: Logo */}
-        <Link
-          to="/"
-          onClick={scrollToTop}
-          className="flex items-center gap-2.5 transition-opacity hover:opacity-85 shrink-0 z-10"
-        >
-          <div className="md:hidden">
-            <Logo size={24} />
-          </div>
-          <div className="hidden md:block">
-            <Logo size={20} />
-          </div>
-          <span className="font-serif text-[18px] md:text-[17px] font-bold tracking-tight text-ink">
-            ARCHIVE
-          </span>
-        </Link>
-
-        {/* Center: Segmented Navigation Pill (Tablet & Desktop) - Centered & Responsive */}
-        <nav className="hidden md:flex md:absolute md:left-1/2 md:-translate-x-1/2 items-center rounded-full bg-[#F2EFE9] p-1 lg:p-1.5 shadow-xs whitespace-nowrap">
-          {nav.map((item) => {
-            const active = location.pathname === item.to;
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                onClick={scrollToTop}
-                className={`rounded-full px-3.5 md:px-4 lg:px-6 py-1.5 lg:py-2 text-[13px] lg:text-[14px] font-bold transition-all duration-200 ${
-                  active
-                    ? "bg-white text-ink shadow-sm scale-100"
-                    : "text-ink-soft hover:text-ink hover:bg-black/5"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Right: Search, Contribute & Mobile Menu */}
-        <div className="flex items-center gap-2 md:gap-2 lg:gap-3 shrink-0 z-10">
-          <button
-            onClick={() => setSearchOpen(true)}
-            aria-label="Search archive"
-            className="group flex h-10 w-10 md:h-auto md:w-auto items-center justify-center md:justify-start gap-2 rounded-full border border-line-strong bg-white p-0 md:p-2 sm:px-2.5 lg:px-3.5 sm:py-1.5 text-[13px] font-semibold text-ink-soft shadow-xs hover:border-ink hover:shadow-sm active:scale-[0.98] transition-all duration-200"
-          >
-            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 md:w-[15px] md:h-[15px] text-ink-faint transition-transform duration-200 group-hover:scale-110 shrink-0">
-              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.5" />
-              <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-            <span className="hidden lg:inline text-ink-faint">Search...</span>
-            <kbd className="hidden xl:inline rounded bg-paper px-1.5 py-0.5 font-mono text-[10.5px] font-bold text-ink-faint">
-              ⌘K
-            </kbd>
-          </button>
-
-          {/* Contribute Button - Hidden on Mobile, Visible on Tablet & Desktop */}
+    <>
+      <header className="sticky top-2 sm:top-3 z-40 px-3 sm:px-6 lg:px-8 animate-header-enter">
+        <div className="relative mx-auto flex h-20 md:h-14 max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-4.5 sm:px-5 lg:px-7 shadow-sm backdrop-blur-md transition-shadow duration-300">
+          {/* Left: Logo */}
           <Link
-            to="/contribute"
-            className="hidden md:inline-flex rounded-full bg-[#1C1B18] px-3.5 py-1.5 text-[12px] font-bold text-white shadow-sm hover:bg-black hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] lg:px-5 lg:py-2 lg:text-[13px] transition-all duration-200 shrink-0"
+            to="/"
+            onClick={scrollToTop}
+            className="flex items-center gap-2.5 transition-opacity hover:opacity-85 shrink-0 z-10"
           >
-            Contribute
+            <div className="md:hidden">
+              <Logo size={26} />
+            </div>
+            <div className="hidden md:block">
+              <Logo size={20} />
+            </div>
+            <span className="font-serif text-[19px] md:text-[17px] font-bold tracking-tight text-ink">
+              ARCHIVE
+            </span>
           </Link>
 
-          {/* Mobile Navigation Toggle (Mobile Only) - Bigger Tap Target & 3 Lines Icon */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-paper/90 text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0"
-          >
-            {mobileMenuOpen ? (
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="4" y1="7" x2="20" y2="7" />
-                <line x1="4" y1="12" x2="20" y2="12" />
-                <line x1="4" y1="17" x2="20" y2="17" />
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Navigation Dropdown Card */}
-      {mobileMenuOpen && (
-        <div className="mt-2 mx-auto max-w-content overflow-hidden rounded-[16px] border border-line bg-white/98 p-2.5 shadow-lift backdrop-blur-md md:hidden animate-modal-in">
-          <nav className="flex flex-col gap-1">
+          {/* Center: Segmented Navigation Pill (Tablet & Desktop) */}
+          <nav className="hidden md:flex md:absolute md:left-1/2 md:-translate-x-1/2 items-center rounded-full bg-[#F2EFE9] p-1 lg:p-1.5 shadow-xs whitespace-nowrap">
             {nav.map((item) => {
               const active = location.pathname === item.to;
               return (
                 <Link
                   key={item.to}
                   to={item.to}
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    scrollToTop();
-                  }}
-                  className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-[14px] font-bold transition-colors ${
+                  onClick={scrollToTop}
+                  className={`rounded-full px-3.5 md:px-4 lg:px-6 py-1.5 lg:py-2 text-[13px] lg:text-[14px] font-bold transition-all duration-200 ${
                     active
-                      ? "bg-[#7A2E2A] text-white shadow-xs"
-                      : "text-ink hover:bg-paper"
+                      ? "bg-white text-ink shadow-sm scale-100"
+                      : "text-ink-soft hover:text-ink hover:bg-black/5"
                   }`}
                 >
-                  <span className="flex items-center gap-2.5">
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </span>
-                  {active && <span className="text-[10px]">●</span>}
+                  {item.label}
                 </Link>
               );
             })}
-            <div className="pt-1 mt-1 border-t border-line">
+          </nav>
+
+          {/* Right: Search, Contribute & Mobile Menu */}
+          <div className="flex items-center gap-2.5 md:gap-2 lg:gap-3 shrink-0 z-10">
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search archive"
+              className="group flex h-11 w-11 md:h-auto md:w-auto items-center justify-center md:justify-start gap-2 rounded-full border border-line-strong bg-white p-0 md:p-2 sm:px-2.5 lg:px-3.5 sm:py-1.5 text-[13px] font-semibold text-ink-soft shadow-xs hover:border-ink hover:shadow-sm active:scale-[0.98] transition-all duration-200"
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 md:w-[15px] md:h-[15px] text-ink-faint transition-transform duration-200 group-hover:scale-110 shrink-0">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.5" />
+                <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+              </svg>
+              <span className="hidden lg:inline text-ink-faint">Search...</span>
+              <kbd className="hidden xl:inline rounded bg-paper px-1.5 py-0.5 font-mono text-[10.5px] font-bold text-ink-faint">
+                ⌘K
+              </kbd>
+            </button>
+
+            {/* Contribute Button - Hidden on Mobile, Visible on Tablet & Desktop */}
+            <Link
+              to="/contribute"
+              className="hidden md:inline-flex rounded-full bg-[#1C1B18] px-3.5 py-1.5 text-[12px] font-bold text-white shadow-sm hover:bg-black hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] lg:px-5 lg:py-2 lg:text-[13px] transition-all duration-200 shrink-0"
+            >
+              Contribute
+            </Link>
+
+            {/* Mobile Navigation Toggle (Mobile Only) - Height 11 w 11 with 3 Lines */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Toggle navigation menu"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-paper/90 text-ink md:hidden transition-colors hover:bg-white active:scale-95 shrink-0"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="17" x2="20" y2="17" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+      </header>
+
+      {/* Large Mobile Menu Modal Window (Mobile Only) - matching media_1790596492143.png */}
+      {mobileMenuOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex flex-col items-center justify-start bg-black/45 backdrop-blur-md px-3 pt-2 sm:pt-3 md:hidden overflow-y-auto animate-backdrop-in">
+            {/* Top Bar inside modal overlay matching mobile header */}
+            <div className="mx-auto flex h-20 w-full max-w-content items-center justify-between rounded-full border border-line bg-white/95 px-4.5 sm:px-5 shadow-sm backdrop-blur-md mb-4 shrink-0">
+              <Link
+                to="/"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  scrollToTop();
+                }}
+                className="flex items-center gap-2.5 transition-opacity hover:opacity-85 shrink-0"
+              >
+                <Logo size={26} />
+                <span className="font-serif text-[19px] font-bold tracking-tight text-ink">
+                  ARCHIVE
+                </span>
+              </Link>
+
+              {/* Circular Dark Close Button matching media_1790596492143.png */}
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close navigation menu"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1C1B18] text-white shadow-sm hover:bg-black active:scale-95 transition-all shrink-0"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Backdrop click dismiss area */}
+            <div
+              className="absolute inset-0 -z-10"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* Large Modal Window Card matching media_1790596492143.png */}
+            <div
+              className="relative w-full max-w-[360px] rounded-[32px] border border-[#ECE5D8] bg-[#FDFBF7] p-4 sm:p-5 shadow-2xl animate-modal-in my-auto pb-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Menu items */}
+              <div className="flex flex-col gap-1.5">
+                {mobileNavItems.map((item) => {
+                  const active = location.pathname === item.to;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        scrollToTop();
+                      }}
+                      className={`flex items-center gap-3.5 rounded-[22px] p-2.5 transition-all duration-200 ${
+                        active
+                          ? "border border-[#E8DEC8] bg-[#FAF6EE] shadow-xs"
+                          : "border border-transparent hover:bg-black/5"
+                      }`}
+                    >
+                      <div
+                        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] transition-colors ${
+                          active
+                            ? "bg-[#FCEAD2] text-[#B86B14]"
+                            : "bg-[#EFECE6] text-[#55504A]"
+                        }`}
+                      >
+                        {item.icon}
+                      </div>
+                      <span
+                        className={`text-[16px] tracking-tight ${
+                          active ? "font-bold text-ink" : "font-semibold text-ink"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Divider */}
+              <div className="my-3.5 border-t border-[#EAE3D8]" />
+
+              {/* Orange Pill Contribute Button */}
               <Link
                 to="/contribute"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   scrollToTop();
                 }}
-                className="flex items-center justify-between rounded-xl px-4 py-2.5 text-[14px] font-bold bg-[#1C1B18] text-white shadow-xs hover:bg-black transition-colors"
+                className="flex w-full items-center justify-between rounded-full bg-[#F27A00] hover:bg-[#E06E00] active:scale-[0.98] py-3.5 px-5 text-white shadow-md shadow-orange-500/25 transition-all duration-200"
               >
-                <span className="flex items-center gap-2.5">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 5v14M5 12h14" />
-                  </svg>
-                  <span>Contribute Resource</span>
-                </span>
-                <span className="text-[12px] opacity-80">→</span>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-white/80 bg-white/30 shrink-0">
+                    <span className="h-2 w-2 rounded-full bg-white" />
+                  </span>
+                  <span className="text-[15px] font-bold text-white tracking-tight">
+                    Contribute to Archive
+                  </span>
+                </div>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="shrink-0"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
               </Link>
             </div>
-          </nav>
-        </div>
-      )}
-
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-    </header>
+          </div>,
+          document.body
+        )}
+    </>
   );
 }
